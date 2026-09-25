@@ -44,6 +44,7 @@
     .custom-scrollbar::-webkit-scrollbar-track { background: #f1f5f9; }
     .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
   </style>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body class="bg-slate-50 text-slate-800 antialiased min-h-screen overflow-x-hidden">
 
@@ -1317,5 +1318,16 @@
       }, 3000);
     }
   </script>
+  <script>
+  // Ganti teks di bawah ini dengan Project URL dan Anon Key milikmu yang disalin dari Supabase
+  const SUPABASE_URL = 'https://kqirvglyethqbzduzrga.supabase.co';
+  const SUPABASE_KEY = 'sb_publishable__AHsE5kzpkQz_5ZAktwwuw_7Zoyeiuy';
+  
+  // Menghubungkan client Supabase
+  const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+  // Cek koneksi di console browser
+  console.log('Supabase berhasil terhubung!');
+</script>
 </body>
 </html>
