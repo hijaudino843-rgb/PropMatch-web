@@ -1,0 +1,1321 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PropMatch AI - Asisten Agent Property Otomatis via WhatsApp</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Font Family -->
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- AOS Animate Library -->
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    
+    .chat-bubble { animation: popIn 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+    @keyframes popIn {
+      0% { opacity: 0; transform: scale(0.85) translateY(10px); }
+      100% { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    .float-animation { animation: float 4s ease-in-out infinite; }
+    @keyframes float {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+      100% { transform: translateY(0px); }
+    }
+
+    .highlight-ring { animation: pulseGlow 1.5s infinite; }
+    @keyframes pulseGlow {
+      0% { box-shadow: 0 0 0 0 rgba(79, 70, 229, 0.7); }
+      70% { box-shadow: 0 0 0 12px rgba(79, 70, 229, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(79, 70, 229, 0); }
+    }
+
+    .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+    .custom-scrollbar::-webkit-scrollbar-track { background: #f1f5f9; }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased min-h-screen overflow-x-hidden">
+
+  <!-- Live Social Proof Notification Pop-Up -->
+  <div id="live-popup" class="fixed bottom-5 left-5 bg-white/95 backdrop-blur-md p-3.5 rounded-2xl shadow-2xl border border-slate-200 z-50 flex items-center gap-3 transition-all duration-500 transform translate-y-20 opacity-0 pointer-events-none max-w-xs">
+    <div class="w-9 h-9 bg-emerald-500 text-white rounded-full flex items-center justify-center font-black text-xs shrink-0">
+      WA
+    </div>
+    <div class="text-xs">
+      <p id="popup-title" class="font-bold text-slate-800">New Listing Received</p>
+      <p id="popup-desc" class="text-slate-500 font-medium">"Rumah Citraland 2.5M" • <span class="text-indigo-600 font-semibold">Agent Budi</span></p>
+    </div>
+  </div>
+
+  <!-- ==================== PAGE 1: LANDING PAGE ==================== -->
+  <div id="landing-page" class="min-h-screen flex flex-col justify-between relative">
+    
+    <!-- Background Decor Glow -->
+    <div class="absolute top-10 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-indigo-200/40 blur-[120px] rounded-full pointer-events-none -z-10"></div>
+
+    <!-- Navbar -->
+    <nav class="max-w-6xl mx-auto w-full px-6 py-5 flex items-center justify-between sticky top-0 bg-slate-50/80 backdrop-blur-md z-40 border-b border-slate-200/50">
+      <div class="flex items-center gap-2 cursor-pointer" onclick="showPage('landing-page')">
+        <div class="w-10 h-10 bg-indigo-600 rounded-2xl flex items-center justify-center text-white font-extrabold text-xl shadow-lg shadow-indigo-200">
+          PM
+        </div>
+        <span class="font-extrabold text-xl text-slate-900 tracking-tight">PropMatch <span class="text-indigo-600">AI</span></span>
+      </div>
+      
+      <div class="hidden md:flex items-center gap-8 text-sm font-semibold text-slate-600">
+        <a href="#keunggulan" class="hover:text-indigo-600 transition-colors">Keunggulan</a>
+        <a href="#fitur" class="hover:text-indigo-600 transition-colors">Fitur</a>
+        <a href="#cara-kerja" class="hover:text-indigo-600 transition-colors">Cara Pakai</a>
+        <a href="#faq" class="hover:text-indigo-600 transition-colors">FAQ</a>
+        <a href="#preview-dashboard" onclick="showPage('dashboard-page')" class="hover:text-indigo-600 transition-colors text-indigo-600 font-bold">Dashboard Agent</a>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <button onclick="showPage('auth-page')" class="text-sm font-bold text-slate-700 hover:text-indigo-600 px-3 py-2">
+          Masuk
+        </button>
+        <button onclick="showPage('auth-page')" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm px-5 py-2.5 rounded-full shadow-md shadow-indigo-200 transition-all hover:scale-105">
+          Coba Dashboard →
+        </button>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <main class="max-w-6xl mx-auto px-6 py-10 lg:py-16 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+      
+      <!-- Text Hero -->
+      <div class="lg:col-span-7 space-y-6 text-center lg:text-left" data-aos="fade-right">
+        <span class="inline-flex items-center gap-2 bg-indigo-50 text-indigo-700 text-xs font-extrabold px-4 py-2 rounded-full border border-indigo-100 shadow-sm">
+          ⚡ Smart Property Assistant for Multi-Agent
+        </span>
+        
+        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black text-slate-900 leading-[1.15]">
+          Kelola listing & <span class="text-indigo-600 underline decoration-wavy decoration-indigo-300">matching leads buyer</span> cukup via Chat WA.
+        </h1>
+        
+        <p class="text-slate-600 text-base sm:text-lg max-w-xl mx-auto lg:mx-0">
+          Agent cukup kirim detail listingan owner atau request buyer ke WhatsApp Bot. AI kami otomatis mengisolasi database per agen & menghitung persentase kecocokan property secara instan.
+        </p>
+
+        <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2">
+          <button onclick="showPage('dashboard-page')" class="w-full sm:w-auto bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold text-base px-8 py-4 rounded-2xl shadow-xl shadow-indigo-200 transition-all hover:-translate-y-1">
+            Buka Dashboard Demo 🚀
+          </button>
+          <button onclick="focusSimulatorInput()" class="w-full sm:w-auto border-2 border-indigo-200 hover:border-indigo-400 bg-white text-indigo-600 font-bold text-base px-8 py-4 rounded-2xl text-center transition-all shadow-sm flex items-center justify-center gap-2">
+            Tes Bot WA ↓
+          </button>
+        </div>
+
+        <div class="pt-6 grid grid-cols-3 gap-4 border-t border-slate-200/60 max-w-md mx-auto lg:mx-0 text-center lg:text-left">
+          <div>
+            <p class="text-2xl font-black text-slate-900">100% Auto</p>
+            <p class="text-xs text-slate-500 font-medium">Auto-Matching AI</p>
+          </div>
+          <div>
+            <p class="text-2xl font-black text-slate-900">Multi-Agent</p>
+            <p class="text-xs text-slate-500 font-medium">Isolated DB by Phone</p>
+          </div>
+          <div>
+            <p class="text-2xl font-black text-slate-900">n8n / Supabase</p>
+            <p class="text-xs text-slate-500 font-medium">Ready Integration</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Simulator WhatsApp Chat Mockup -->
+      <div id="simulasi" class="lg:col-span-5 flex flex-col items-center" data-aos="fade-left">
+        <div class="w-full max-w-[350px] bg-slate-900 p-4 rounded-[42px] shadow-2xl border-4 border-slate-800 relative float-animation">
+          <div class="w-28 h-4 bg-slate-800 rounded-full mx-auto mb-3"></div>
+          
+          <div class="bg-[#efeae2] h-[460px] rounded-[30px] overflow-hidden flex flex-col justify-between shadow-inner">
+            <div class="bg-[#075e54] text-white p-3.5 flex items-center gap-3">
+              <div class="w-8 h-8 bg-indigo-500 rounded-full flex items-center justify-center font-bold text-xs text-white">PM</div>
+              <div>
+                <p class="text-xs font-bold leading-tight">PropMatch Bot (Agent Assistant)</p>
+                <p class="text-[10px] text-emerald-200">Online • AI Bot active</p>
+              </div>
+            </div>
+
+            <div id="sim-chat-box" class="p-3 space-y-3 overflow-y-auto flex-1 text-xs">
+              <div class="bg-white p-2.5 rounded-xl shadow-sm max-w-[88%] chat-bubble border border-slate-100">
+                👋 Halo Agent! Kirim data listing / request buyer di sini.<br><br>
+                <b>Contoh Input Listing:</b><br>
+                <code>Jual rumah Surabaya Barat, 3KT 2KM, harga 1.8M, LT 120, Owner Bpk Hendra 0812345678</code><br><br>
+                <b>Contoh Input Lead Buyer:</b><br>
+                <code>Cari rumah Surabaya Barat budget 2M min 3KT, Buyer Dr. Aris 0877112233</code>
+              </div>
+            </div>
+
+            <div id="input-container" class="p-2.5 bg-slate-100 border-t border-slate-200 flex gap-2 transition-all duration-300">
+              <input id="sim-input" type="text" placeholder="Ketik listing / req buyer..." class="w-full text-xs px-3.5 py-2 rounded-full border border-slate-300 focus:outline-none focus:border-indigo-500">
+              <button onclick="runSimChat()" class="bg-[#075e54] text-white px-3.5 py-2 rounded-full font-bold text-xs hover:bg-emerald-700 transition-all">
+                Kirim
+              </button>
+            </div>
+          </div>
+        </div>
+        <p class="text-xs text-slate-400 mt-4 italic">*Ketik format pesan di atas untuk mensimulasikan bot WA</p>
+      </div>
+
+    </main>
+
+    <!-- KEUNGGULAN SECTION -->
+    <section id="keunggulan" class="bg-white py-16 border-t border-slate-200/60">
+      <div class="max-w-6xl mx-auto px-6">
+        <div class="text-center max-w-2xl mx-auto mb-12" data-aos="fade-up">
+          <h2 class="text-3xl font-black text-slate-900">Mengapa Memilih PropMatch AI?</h2>
+          <p class="text-slate-500 text-sm mt-2">Didesain khusus untuk efisiensi kerja agen properti modern.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div class="p-6 bg-slate-50 rounded-3xl border border-slate-100 hover:shadow-xl transition-all hover:-translate-y-1" data-aos="fade-up" data-aos-delay="100">
+            <div class="w-12 h-12 bg-indigo-100 text-indigo-600 rounded-2xl flex items-center justify-center font-bold text-xl mb-4">💬</div>
+            <h3 class="font-extrabold text-slate-900 text-lg mb-2">Input Serba Praktis via WA</h3>
+            <p class="text-slate-500 text-sm">Tidak perlu buka web app rumit saat dilapangan. Kirim pesan biasa via WhatsApp, AI parsing otomatis menyimpan data ke database.</p>
+          </div>
+
+          <div class="p-6 bg-slate-50 rounded-3xl border border-slate-100 hover:shadow-xl transition-all hover:-translate-y-1" data-aos="fade-up" data-aos-delay="200">
+            <div class="w-12 h-12 bg-indigo-100 text-indigo-600 rounded-2xl flex items-center justify-center font-bold text-xl mb-4">🔐</div>
+            <h3 class="font-extrabold text-slate-900 text-lg mb-2">Database Terpisah per Agent</h3>
+            <p class="text-slate-500 text-sm">Setiap agen memiliki ruang database terisolasi berdasarkan Uniq Nomor HP WhatsApp masing-masing. Rahasia listingan aman.</p>
+          </div>
+
+          <div class="p-6 bg-slate-50 rounded-3xl border border-slate-100 hover:shadow-xl transition-all hover:-translate-y-1" data-aos="fade-up" data-aos-delay="300">
+            <div class="w-12 h-12 bg-indigo-100 text-indigo-600 rounded-2xl flex items-center justify-center font-bold text-xl mb-4">⚡</div>
+            <h3 class="font-extrabold text-slate-900 text-lg mb-2">Instant Smart Matching</h3>
+            <p class="text-slate-500 text-sm">Algoritma otomatis menilai kecocokan spesifikasi (lokasi, budget, jumlah kamar, tipe) dan mencocokkan Lead vs Listing secara akurat.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FITUR SECTION -->
+    <section id="fitur" class="py-16 bg-slate-50 border-t border-slate-200/60">
+      <div class="max-w-6xl mx-auto px-6">
+        <div class="text-center max-w-2xl mx-auto mb-12" data-aos="fade-up">
+          <h2 class="text-3xl font-black text-slate-900">Fitur Utama PropMatch AI</h2>
+          <p class="text-slate-500 text-sm mt-2">Segala kebutuhan rekap data & penutupan transaksi dalam satu ekosistem.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm hover:border-indigo-300 transition-all" data-aos="zoom-in" data-aos-delay="100">
+            <span class="text-3xl mb-3 block">🤖</span>
+            <h4 class="font-bold text-slate-900 mb-1">n8n & Supabase Sync</h4>
+            <p class="text-xs text-slate-500">Terhubung langsung dengan webhook n8n dan database Supabase secara real-time.</p>
+          </div>
+
+          <div class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm hover:border-indigo-300 transition-all" data-aos="zoom-in" data-aos-delay="200">
+            <span class="text-3xl mb-3 block">🎯</span>
+            <h4 class="font-bold text-slate-900 mb-1">Match Score Engine</h4>
+            <p class="text-xs text-slate-500">Memberikan skor kecocokan (%) berdasarkan toleransi budget, lokasi, dan kamar.</p>
+          </div>
+
+          <div class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm hover:border-indigo-300 transition-all" data-aos="zoom-in" data-aos-delay="300">
+            <span class="text-3xl mb-3 block">📲</span>
+            <h4 class="font-bold text-slate-900 mb-1">1-Click Broadcast WA</h4>
+            <p class="text-xs text-slate-500">Kirim tawaran rekomendasi properti ke buyer dengan draf pesan otomatis rapi.</p>
+          </div>
+
+          <div class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm hover:border-indigo-300 transition-all" data-aos="zoom-in" data-aos-delay="400">
+            <span class="text-3xl mb-3 block">📊</span>
+            <h4 class="font-bold text-slate-900 mb-1">Visual Analytics</h4>
+            <p class="text-xs text-slate-500">Dashboard visual rasio closing, sebaran tipe properti, dan statistik leads.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CARA PAKAI SECTION -->
+    <section id="cara-kerja" class="bg-white py-16 border-t border-slate-200/60">
+      <div class="max-w-6xl mx-auto px-6">
+        <div class="text-center max-w-2xl mx-auto mb-12" data-aos="fade-up">
+          <h2 class="text-3xl font-black text-slate-900">Alur Kerja Sistem</h2>
+          <p class="text-slate-500 text-sm mt-2">Hanya 3 langkah ringkas tanpa hambatan teknis.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div class="text-center p-4" data-aos="fade-up" data-aos-delay="100">
+            <div class="w-14 h-14 bg-indigo-600 text-white font-black text-xl rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-indigo-200">1</div>
+            <h3 class="font-bold text-slate-900 text-base mb-1">Chat Bot WhatsApp</h3>
+            <p class="text-xs text-slate-500">Agent kirim data listing baru dari owner atau request cari properti dari buyer ke WhatsApp Bot.</p>
+          </div>
+
+          <div class="text-center p-4" data-aos="fade-up" data-aos-delay="200">
+            <div class="w-14 h-14 bg-indigo-600 text-white font-black text-xl rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-indigo-200">2</div>
+            <h3 class="font-bold text-slate-900 text-base mb-1">Auto-Save per Uniq ID</h3>
+            <p class="text-xs text-slate-500">Sistem mengelompokkan data berdasarkan nomor WA Agent sebagai Uniq User ID di database.</p>
+          </div>
+
+          <div class="text-center p-4" data-aos="fade-up" data-aos-delay="300">
+            <div class="w-14 h-14 bg-indigo-600 text-white font-black text-xl rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-indigo-200">3</div>
+            <h3 class="font-bold text-slate-900 text-base mb-1">Buka Dashboard & Match</h3>
+            <p class="text-xs text-slate-500">Buka dashboard web untuk melihat rekapitulasi data & rekomendasi matching secara otomatis.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ SECTION -->
+    <section id="faq" class="py-16 bg-slate-50 border-t border-slate-200/60">
+      <div class="max-w-4xl mx-auto px-6">
+        <div class="text-center mb-12" data-aos="fade-up">
+          <h2 class="text-3xl font-black text-slate-900">Pertanyaan Sering Diajukan (FAQ)</h2>
+          <p class="text-slate-500 text-sm mt-2">Penjelasan seputar fungsionalitas dan keamanan PropMatch AI.</p>
+        </div>
+
+        <div class="space-y-4" data-aos="fade-up">
+          <div class="bg-white p-5 rounded-2xl border border-slate-200/80">
+            <h4 class="font-bold text-slate-900 text-sm mb-1">Apakah agen lain bisa melihat listingan milik saya?</h4>
+            <p class="text-xs text-slate-500">Tidak. Setiap data diisolasi secara privat berdasarkan Uniq User ID (Nomor HP Agent). Agen A hanya dapat melihat data miliknya sendiri di dashboard.</p>
+          </div>
+
+          <div class="bg-white p-5 rounded-2xl border border-slate-200/80">
+            <h4 class="font-bold text-slate-900 text-sm mb-1">Bagaimana cara algoritma menghitung tingkat kecocokan (Matching Score)?</h4>
+            <p class="text-xs text-slate-500">Sistem menganalisis 5 parameter utama: Kesamaan Tipe/Fungsi Bangunan (30%), Toleransi Budget (30%), Kata Kunci Lokasi (20%), Jumlah Kamar Tidur (10%), dan Kamar Mandi (10%).</p>
+          </div>
+
+          <div class="bg-white p-5 rounded-2xl border border-slate-200/80">
+            <h4 class="font-bold text-slate-900 text-sm mb-1">Apakah bisa diintegrasikan dengan n8n dan Supabase milik kami sendiri?</h4>
+            <p class="text-xs text-slate-500">Sangat bisa. Struktur data aplikasi ini sudah disesuaikan dengan skema JSON standar Supabase dan REST Webhook n8n.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 py-8 text-center text-xs">
+      <p>© 2026 PropMatch AI - Property Assistant & Smart Dashboard Engine.</p>
+    </footer>
+
+  </div>
+
+
+  <!-- ==================== PAGE 2: AUTH / LOGIN AGENT ==================== -->
+  <div id="auth-page" class="hidden min-h-screen flex flex-col items-center justify-center p-4">
+    <div class="bg-white p-8 rounded-3xl shadow-xl max-w-md w-full text-center border border-slate-100 relative">
+      <button onclick="showPage('landing-page')" class="absolute top-4 left-4 text-xs font-bold text-slate-400 hover:text-slate-600">
+        ← Kembali
+      </button>
+
+      <div class="w-16 h-16 bg-indigo-600 rounded-2xl flex items-center justify-center mx-auto mb-4 text-white font-black text-2xl shadow-lg shadow-indigo-200">
+        PM
+      </div>
+      
+      <h1 class="text-2xl font-bold text-slate-900 mb-2">Login Agent PropMatch AI</h1>
+      <p class="text-sm text-slate-500 mb-6">Pilih ID Agen untuk mensimulasikan login terpisah.</p>
+
+      <div class="space-y-3 mb-6 text-left">
+        <button onclick="loginAsAgent('6281234567890', 'Budi')" class="w-full p-3.5 bg-slate-50 hover:bg-indigo-50 border border-slate-200 hover:border-indigo-300 rounded-2xl flex items-center justify-between transition-all">
+          <div class="flex items-center gap-3">
+            <div class="w-8 h-8 bg-indigo-600 text-white rounded-full flex items-center justify-center font-bold text-xs">B</div>
+            <div>
+              <p class="text-xs font-bold text-slate-800">Agent Budi (Pro)</p>
+              <p class="text-[10px] text-slate-400">+62 812-3456-7890</p>
+            </div>
+          </div>
+          <span class="text-xs font-bold text-indigo-600">Pilih →</span>
+        </button>
+
+        <button onclick="loginAsAgent('6289876543210', 'Siti')" class="w-full p-3.5 bg-slate-50 hover:bg-indigo-50 border border-slate-200 hover:border-indigo-300 rounded-2xl flex items-center justify-between transition-all">
+          <div class="flex items-center gap-3">
+            <div class="w-8 h-8 bg-emerald-600 text-white rounded-full flex items-center justify-center font-bold text-xs">S</div>
+            <div>
+              <p class="text-xs font-bold text-slate-800">Agent Siti (Premier)</p>
+              <p class="text-[10px] text-slate-400">+62 898-7654-3210</p>
+            </div>
+          </div>
+          <span class="text-xs font-bold text-indigo-600">Pilih →</span>
+        </button>
+      </div>
+
+      <button onclick="showPage('dashboard-page')" class="text-xs text-indigo-600 font-bold underline hover:text-indigo-700">
+        Langsung Masuk ke Dashboard Utama (Default Agent Budi)
+      </button>
+    </div>
+  </div>
+
+
+  <!-- ==================== PAGE 3: DASHBOARD UTAMA AGENT ==================== -->
+  <div id="dashboard-page" class="hidden min-h-screen pb-12 bg-slate-50">
+    
+    <!-- Top Header -->
+    <header class="bg-slate-900 text-white border-b border-slate-800 sticky top-0 z-40">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-16">
+          <div class="flex items-center space-x-3 cursor-pointer" onclick="showPage('landing-page')">
+            <div class="p-2 bg-indigo-600 rounded-lg text-white font-extrabold text-sm">PM</div>
+            <div>
+              <h1 class="text-base font-bold leading-tight">PropMatch <span class="text-indigo-400">AI</span></h1>
+              <p class="text-[10px] text-slate-400">Agent Dashboard & Smart Matcher</p>
+            </div>
+          </div>
+
+          <div class="flex items-center space-x-4">
+            <div class="flex items-center bg-slate-800 rounded-lg p-1 border border-slate-700">
+              <i data-lucide="phone-call" class="w-4 h-4 text-slate-400 ml-2 mr-2"></i>
+              <span class="text-xs text-slate-400 mr-2 hidden sm:inline">Active Uniq ID:</span>
+              <select id="agentSelect" onchange="switchAgent(this.value)" class="bg-slate-900 text-slate-200 text-xs font-semibold rounded px-2 py-1 outline-none border border-slate-700 focus:border-indigo-500">
+                <option value="6281234567890">+62 812-3456-7890 (Agent Budi)</option>
+                <option value="6289876543210">+62 898-7654-3210 (Agent Siti)</option>
+              </select>
+            </div>
+
+            <button onclick="showPage('landing-page')" class="text-xs bg-slate-800 hover:bg-slate-700 px-3 py-2 rounded-lg text-slate-300">
+              Keluar
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Container Dashboard -->
+    <main class="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+
+      <!-- Metrics Cards -->
+      <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex items-center justify-between">
+          <div>
+            <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Total Listing</p>
+            <h3 id="statTotalListings" class="text-2xl font-black text-slate-800 mt-1">0</h3>
+          </div>
+          <div class="p-3 bg-blue-50 text-blue-600 rounded-xl"><i data-lucide="home" class="w-6 h-6"></i></div>
+        </div>
+
+        <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex items-center justify-between">
+          <div>
+            <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Total Leads Request</p>
+            <h3 id="statTotalLeads" class="text-2xl font-black text-slate-800 mt-1">0</h3>
+          </div>
+          <div class="p-3 bg-amber-50 text-amber-600 rounded-xl"><i data-lucide="users" class="w-6 h-6"></i></div>
+        </div>
+
+        <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex items-center justify-between">
+          <div>
+            <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">High Match (≥60%)</p>
+            <h3 id="statTotalMatches" class="text-2xl font-black text-slate-800 mt-1">0</h3>
+          </div>
+          <div class="p-3 bg-emerald-50 text-emerald-600 rounded-xl"><i data-lucide="sparkles" class="w-6 h-6"></i></div>
+        </div>
+
+        <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex items-center justify-between">
+          <div>
+            <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Bot WhatsApp Sync</p>
+            <div class="flex items-center space-x-2 mt-1">
+              <span class="w-2.5 h-2.5 bg-emerald-500 rounded-full animate-pulse"></span>
+              <span class="text-xs font-bold text-slate-700">n8n Connected</span>
+            </div>
+          </div>
+          <div class="p-3 bg-slate-100 text-slate-600 rounded-xl"><i data-lucide="bot" class="w-6 h-6"></i></div>
+        </div>
+      </section>
+
+      <!-- Chart Section -->
+      <section class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+        <div>
+          <h3 class="text-sm font-bold text-slate-800 mb-1">Sebaran Tipe Properti Agent</h3>
+          <p class="text-xs text-slate-400 mb-4">Grafik proporsi kategori listingan pada Uniq ID saat ini.</p>
+          <div class="w-52 h-52 mx-auto">
+            <canvas id="agentDashboardChart"></canvas>
+          </div>
+        </div>
+
+        <div class="space-y-4 border-t md:border-t-0 md:border-l border-slate-100 pt-4 md:pt-0 md:pl-6">
+          <h4 class="text-xs font-extrabold text-slate-400 uppercase tracking-wider">Quick Actions & Input WA</h4>
+          <p class="text-xs text-slate-500">Gunakan simulator untuk menambahkan data langsung seolah-olah Anda mengirim chat ke WhatsApp Bot.</p>
+          
+          <div class="flex flex-col gap-2 pt-2">
+            <button onclick="focusSimulatorInput(); showPage('landing-page');" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs py-3 px-4 rounded-xl flex items-center justify-center gap-2 shadow-sm transition">
+              <i data-lucide="message-circle" class="w-4 h-4"></i>
+              <span>Simulasi Input Chat WA Bot</span>
+            </button>
+            <button onclick="openModal('addListingModal')" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs py-3 px-4 rounded-xl flex items-center justify-center gap-2 shadow-sm transition">
+              <i data-lucide="plus" class="w-4 h-4"></i>
+              <span>Input Manual Property Listing</span>
+            </button>
+            <button onclick="openModal('addLeadModal')" class="bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs py-3 px-4 rounded-xl flex items-center justify-center gap-2 shadow-sm transition">
+              <i data-lucide="user-plus" class="w-4 h-4"></i>
+              <span>Input Manual Buyer Lead</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Navigation Tabs -->
+      <div class="border-b border-slate-200 flex space-x-6 text-sm font-medium">
+        <button id="tabBtnMatching" onclick="switchTab('matching')" class="pb-3 border-b-2 border-indigo-600 text-indigo-600 flex items-center space-x-2 font-bold">
+          <i data-lucide="git-merge" class="w-4 h-4"></i>
+          <span>Smart Matching Engine</span>
+        </button>
+        <button id="tabBtnListings" onclick="switchTab('listings')" class="pb-3 border-b-2 border-transparent text-slate-500 hover:text-slate-700 flex items-center space-x-2">
+          <i data-lucide="building" class="w-4 h-4"></i>
+          <span>Database Property Listing</span>
+        </button>
+        <button id="tabBtnLeads" onclick="switchTab('leads')" class="pb-3 border-b-2 border-transparent text-slate-500 hover:text-slate-700 flex items-center space-x-2">
+          <i data-lucide="user-check" class="w-4 h-4"></i>
+          <span>Database Customer Leads</span>
+        </button>
+      </div>
+
+      <!-- TAB CONTENT 1: SMART MATCHING ENGINE -->
+      <section id="tabMatching" class="space-y-6">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          
+          <div class="lg:col-span-4 bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+            <div class="border-b border-slate-100 pb-3">
+              <h2 class="text-sm font-bold text-slate-800 flex items-center space-x-2">
+                <i data-lucide="filter" class="w-4 h-4 text-indigo-600"></i>
+                <span>Pilih Lead Buyer</span>
+              </h2>
+              <p class="text-xs text-slate-500">Pilih kebutuhan buyer untuk mencari properti yang paling sesuai.</p>
+            </div>
+
+            <div>
+              <label class="block text-xs font-semibold text-slate-600 mb-1">Daftar Lead Buyer (Uniq ID):</label>
+              <select id="matchLeadSelect" onchange="runMatching()" class="w-full bg-slate-50 border border-slate-300 rounded-xl p-2.5 text-xs text-slate-800 focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+              </select>
+            </div>
+
+            <div id="selectedLeadCard" class="bg-indigo-50/60 border border-indigo-100 rounded-xl p-4 space-y-2 text-xs">
+            </div>
+
+            <button onclick="runMatching()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2.5 rounded-xl text-xs transition flex items-center justify-center space-x-2 shadow-sm">
+              <i data-lucide="refresh-cw" class="w-4 h-4"></i>
+              <span>Hitung Ulang Matching</span>
+            </button>
+          </div>
+
+          <div class="lg:col-span-8 bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+              <div>
+                <h2 class="text-sm font-bold text-slate-800 flex items-center space-x-2">
+                  <i data-lucide="sparkles" class="w-4 h-4 text-amber-500"></i>
+                  <span>Hasil Rekomendasi Properti Cocok</span>
+                </h2>
+                <p class="text-xs text-slate-500">Diurutkan berdasarkan persentase kemiripan spesifikasi.</p>
+              </div>
+              <span id="matchCountBadge" class="text-xs font-semibold px-2.5 py-1 bg-slate-100 text-slate-600 rounded-full">0 Match</span>
+            </div>
+
+            <div id="matchingResultsContainer" class="space-y-4 max-h-[500px] overflow-y-auto custom-scrollbar pr-1">
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- TAB CONTENT 2: DATABASE PROPERTY LISTING -->
+      <section id="tabListings" class="hidden space-y-4">
+        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div>
+              <h2 class="text-sm font-bold text-slate-800">Database Property Listing</h2>
+              <p class="text-xs text-slate-500">Listingan milik Uniq ID Agent saat ini.</p>
+            </div>
+            <div class="flex items-center space-x-2">
+              <input type="text" id="searchListingInput" oninput="renderListingsTable()" placeholder="Cari lokasi, judul, tipe..." class="bg-slate-50 border border-slate-300 text-xs rounded-xl px-3 py-2 w-48 sm:w-64 focus:outline-none focus:ring-1 focus:ring-indigo-500">
+              <button onclick="openModal('addListingModal')" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold px-3 py-2 rounded-xl transition flex items-center space-x-1">
+                <i data-lucide="plus" class="w-4 h-4"></i>
+                <span>Tambah Listing</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="overflow-x-auto custom-scrollbar border border-slate-200 rounded-xl">
+            <table class="w-full text-left border-collapse text-xs">
+              <thead>
+                <tr class="bg-slate-100 text-slate-600 font-semibold border-b border-slate-200 uppercase tracking-wider">
+                  <th class="p-3">ID / Date</th>
+                  <th class="p-3">Judul & Tipe</th>
+                  <th class="p-3">Lokasi</th>
+                  <th class="p-3">Harga</th>
+                  <th class="p-3">Spesifikasi</th>
+                  <th class="p-3">Pemilik (Owner)</th>
+                  <th class="p-3 text-right">Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="listingsTableBody" class="divide-y divide-slate-200">
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB CONTENT 3: DATABASE CUSTOMER LEADS -->
+      <section id="tabLeads" class="hidden space-y-4">
+        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div>
+              <h2 class="text-sm font-bold text-slate-800">Database Customer Leads Requirement</h2>
+              <p class="text-xs text-slate-500">Request cari properti milik Uniq ID Agent saat ini.</p>
+            </div>
+            <div class="flex items-center space-x-2">
+              <input type="text" id="searchLeadInput" oninput="renderLeadsTable()" placeholder="Cari nama buyer, lokasi..." class="bg-slate-50 border border-slate-300 text-xs rounded-xl px-3 py-2 w-48 sm:w-64 focus:outline-none focus:ring-1 focus:ring-indigo-500">
+              <button onclick="openModal('addLeadModal')" class="bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold px-3 py-2 rounded-xl transition flex items-center space-x-1">
+                <i data-lucide="plus" class="w-4 h-4"></i>
+                <span>Tambah Lead</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="overflow-x-auto custom-scrollbar border border-slate-200 rounded-xl">
+            <table class="w-full text-left border-collapse text-xs">
+              <thead>
+                <tr class="bg-slate-100 text-slate-600 font-semibold border-b border-slate-200 uppercase tracking-wider">
+                  <th class="p-3">ID / Date</th>
+                  <th class="p-3">Nama Buyer / WA</th>
+                  <th class="p-3">Tipe Req</th>
+                  <th class="p-3">Target Lokasi</th>
+                  <th class="p-3">Max Budget</th>
+                  <th class="p-3">Min Spesifikasi</th>
+                  <th class="p-3 text-right">Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="leadsTableBody" class="divide-y divide-slate-200">
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+
+  <!-- MODAL ADD LISTING -->
+  <div id="addListingModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden">
+    <div class="bg-white rounded-2xl shadow-xl border border-slate-200 w-full max-w-md overflow-hidden">
+      <div class="bg-slate-900 text-white p-4 flex items-center justify-between">
+        <h3 class="text-xs font-bold">Tambah Listing Properti Baru</h3>
+        <button onclick="closeModal('addListingModal')" class="text-slate-400 hover:text-white"><i data-lucide="x" class="w-4 h-4"></i></button>
+      </div>
+
+      <form onsubmit="handleManualAddListing(event)" class="p-5 space-y-3 text-xs">
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">Judul Listing Properti:</label>
+          <input type="text" id="addListTitle" required placeholder="Rumah Minimalis Citraland" class="w-full border border-slate-300 rounded-xl p-2 focus:ring-1 focus:ring-indigo-500">
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">Tipe Properti:</label>
+            <select id="addListType" class="w-full border border-slate-300 rounded-xl p-2 bg-slate-50">
+              <option value="Rumah">Rumah</option>
+              <option value="Ruko">Ruko</option>
+              <option value="Apartemen">Apartemen</option>
+              <option value="Tanah">Tanah</option>
+            </select>
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">Harga (Rp):</label>
+            <input type="number" id="addListPrice" required placeholder="1850000000" class="w-full border border-slate-300 rounded-xl p-2 focus:ring-1 focus:ring-indigo-500">
+          </div>
+        </div>
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">Lokasi / Area:</label>
+          <input type="text" id="addListLocation" required placeholder="Surabaya Barat" class="w-full border border-slate-300 rounded-xl p-2 focus:ring-1 focus:ring-indigo-500">
+        </div>
+        <div class="grid grid-cols-3 gap-2">
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">KT:</label>
+            <input type="number" id="addListKT" value="3" class="w-full border border-slate-300 rounded-xl p-2 focus:ring-1 focus:ring-indigo-500">
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">KM:</label>
+            <input type="number" id="addListKM" value="2" class="w-full border border-slate-300 rounded-xl p-2 focus:ring-1 focus:ring-indigo-500">
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">LT (m²):</label>
+            <input type="number" id="addListLT" value="120" class="w-full border border-slate-300 rounded-xl p-2 focus:ring-1 focus:ring-indigo-500">
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">Nama Owner:</label>
+            <input type="text" id="addListOwner" required placeholder="Pak Hendra" class="w-full border border-slate-300 rounded-xl p-2 focus:ring-1 focus:ring-indigo-500">
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">No. WA Owner:</label>
+            <input type="text" id="addListPhone" required placeholder="6281299001122" class="w-full border border-slate-300 rounded-xl p-2 focus:ring-1 focus:ring-indigo-500">
+          </div>
+        </div>
+
+        <div class="flex justify-end space-x-2 pt-3 border-t border-slate-200">
+          <button type="button" onclick="closeModal('addListingModal')" class="px-4 py-2 border border-slate-300 rounded-xl text-slate-600 hover:bg-slate-50">Batal</button>
+          <button type="submit" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-bold">Simpan Listing</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+
+  <!-- MODAL ADD LEAD -->
+  <div id="addLeadModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden">
+    <div class="bg-white rounded-2xl shadow-xl border border-slate-200 w-full max-w-md overflow-hidden">
+      <div class="bg-slate-900 text-white p-4 flex items-center justify-between">
+        <h3 class="text-xs font-bold">Tambah Customer Lead Request</h3>
+        <button onclick="closeModal('addLeadModal')" class="text-slate-400 hover:text-white"><i data-lucide="x" class="w-4 h-4"></i></button>
+      </div>
+
+      <form onsubmit="handleManualAddLead(event)" class="p-5 space-y-3 text-xs">
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">Nama Buyer:</label>
+            <input type="text" id="addLeadName" required placeholder="Dr. Aris" class="w-full border border-slate-300 rounded-xl p-2 focus:ring-1 focus:ring-indigo-500">
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">No. WA Buyer:</label>
+            <input type="text" id="addLeadPhone" required placeholder="6287711223344" class="w-full border border-slate-300 rounded-xl p-2 focus:ring-1 focus:ring-indigo-500">
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">Tipe Req:</label>
+            <select id="addLeadType" class="w-full border border-slate-300 rounded-xl p-2 bg-slate-50">
+              <option value="Rumah">Rumah</option>
+              <option value="Ruko">Ruko</option>
+              <option value="Apartemen">Apartemen</option>
+              <option value="Tanah">Tanah</option>
+            </select>
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">Max Budget (Rp):</label>
+            <input type="number" id="addLeadBudget" required placeholder="2000000000" class="w-full border border-slate-300 rounded-xl p-2 focus:ring-1 focus:ring-indigo-500">
+          </div>
+        </div>
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">Target Lokasi / Keyword:</label>
+          <input type="text" id="addLeadLocation" required placeholder="Surabaya Barat" class="w-full border border-slate-300 rounded-xl p-2 focus:ring-1 focus:ring-indigo-500">
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">Min. KT:</label>
+            <input type="number" id="addLeadKT" value="3" class="w-full border border-slate-300 rounded-xl p-2 focus:ring-1 focus:ring-indigo-500">
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">Min. KM:</label>
+            <input type="number" id="addLeadKM" value="2" class="w-full border border-slate-300 rounded-xl p-2 focus:ring-1 focus:ring-indigo-500">
+          </div>
+        </div>
+
+        <div class="flex justify-end space-x-2 pt-3 border-t border-slate-200">
+          <button type="button" onclick="closeModal('addLeadModal')" class="px-4 py-2 border border-slate-300 rounded-xl text-slate-600 hover:bg-slate-50">Batal</button>
+          <button type="submit" class="px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-xl font-bold">Simpan Lead</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+
+  <!-- TOAST CONTAINER -->
+  <div id="toastContainer" class="fixed bottom-5 right-5 space-y-2 z-50"></div>
+
+
+  <!-- ==================== JAVASCRIPT CORE LOGIC ==================== -->
+  <script>
+    // Init AOS Animate Library
+    AOS.init({ duration: 700, once: true });
+
+    // Seed Initial Data per Agent (Isolated Uniq ID)
+    const SEED_LISTINGS = [
+      {
+        id: "LST-101",
+        agent_id: "6281234567890", // Agent Budi
+        title: "Rumah Minimalis Modern Graha Natura",
+        type: "Rumah",
+        location: "Surabaya Barat",
+        price: 1850000000,
+        bedrooms: 3,
+        bathrooms: 2,
+        land_size: 120,
+        owner_name: "Pak Hendra",
+        owner_phone: "6281299001122",
+        created_at: new Date(Date.now() - 86400000 * 2).toISOString()
+      },
+      {
+        id: "LST-102",
+        agent_id: "6281234567890",
+        title: "Ruko Strategis Jalan MERR Rungkut",
+        type: "Ruko",
+        location: "Surabaya Timur",
+        price: 2500000000,
+        bedrooms: 1,
+        bathrooms: 2,
+        land_size: 90,
+        owner_name: "Ibu Siska",
+        owner_phone: "6281388776655",
+        created_at: new Date(Date.now() - 86400000 * 1).toISOString()
+      },
+      {
+        id: "LST-103",
+        agent_id: "6289876543210", // Agent Siti
+        title: "Apartemen Grand Sungkono Lagoon High Floor",
+        type: "Apartemen",
+        location: "Surabaya Barat",
+        price: 950000000,
+        bedrooms: 2,
+        bathrooms: 1,
+        land_size: 45,
+        owner_name: "Pak Bambang",
+        owner_phone: "6281144332211",
+        created_at: new Date().toISOString()
+      }
+    ];
+
+    const SEED_LEADS = [
+      {
+        id: "LED-201",
+        agent_id: "6281234567890", // Agent Budi
+        customer_name: "Dr. Aris",
+        customer_phone: "6287711223344",
+        property_type: "Rumah",
+        target_location: "Surabaya Barat",
+        max_budget: 2000000000,
+        min_bedrooms: 3,
+        min_bathrooms: 2,
+        created_at: new Date(Date.now() - 3600000 * 5).toISOString()
+      },
+      {
+        id: "LED-202",
+        agent_id: "6289876543210", // Agent Siti
+        customer_name: "Pak Gunawan",
+        customer_phone: "6289900112233",
+        property_type: "Apartemen",
+        target_location: "Surabaya Barat",
+        max_budget: 1000000000,
+        min_bedrooms: 2,
+        min_bathrooms: 1,
+        created_at: new Date().toISOString()
+      }
+    ];
+
+    // State Management
+    let currentAgentId = "6281234567890";
+    let dbListings = [];
+    let dbLeads = [];
+    let agentChart = null;
+
+    document.addEventListener("DOMContentLoaded", () => {
+      loadStorageData();
+      lucide.createIcons();
+      setTimeout(triggerLivePopUp, 2000);
+      setInterval(triggerLivePopUp, 10000);
+    });
+
+    // Load & Save LocalStorage
+    function loadStorageData() {
+      const storedListings = localStorage.getItem("propmatch_listings");
+      const storedLeads = localStorage.getItem("propmatch_leads");
+
+      dbListings = storedListings ? JSON.parse(storedListings) : [...SEED_LISTINGS];
+      dbLeads = storedLeads ? JSON.parse(storedLeads) : [...SEED_LEADS];
+
+      if (!storedListings) saveListings();
+      if (!storedLeads) saveLeads();
+    }
+
+    function saveListings() { localStorage.setItem("propmatch_listings", JSON.stringify(dbListings)); }
+    function saveLeads() { localStorage.setItem("propmatch_leads", JSON.stringify(dbLeads)); }
+
+    // Page Router
+    function showPage(pageId) {
+      document.getElementById('landing-page').classList.add('hidden');
+      document.getElementById('auth-page').classList.add('hidden');
+      document.getElementById('dashboard-page').classList.add('hidden');
+      
+      document.getElementById(pageId).classList.remove('hidden');
+
+      if (pageId === 'dashboard-page') {
+        refreshDashboardUI();
+      }
+    }
+
+    function loginAsAgent(phone, name) {
+      currentAgentId = phone;
+      document.getElementById("agentSelect").value = phone;
+      showToast(`Login Berhasil sebagai Agent ${name}`, "success");
+      showPage("dashboard-page");
+    }
+
+    function switchAgent(agentPhone) {
+      currentAgentId = agentPhone;
+      showToast(`Beralih ke Uniq ID: ${agentPhone}`, "info");
+      refreshDashboardUI();
+    }
+
+    function refreshDashboardUI() {
+      updateMetrics();
+      populateLeadSelectOptions();
+      renderListingsTable();
+      renderLeadsTable();
+      runMatching();
+      renderAgentChart();
+      lucide.createIcons();
+    }
+
+    // Chart Rendering
+    function renderAgentChart() {
+      const ctx = document.getElementById("agentDashboardChart").getContext("2d");
+      const agentListings = dbListings.filter(l => l.agent_id === currentAgentId);
+
+      const typeCounts = { Rumah: 0, Ruko: 0, Apartemen: 0, Tanah: 0 };
+      agentListings.forEach(l => {
+        if (typeCounts[l.type] !== undefined) typeCounts[l.type]++;
+        else typeCounts[l.type] = 1;
+      });
+
+      if (agentChart) agentChart.destroy();
+
+      agentChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          labels: Object.keys(typeCounts),
+          datasets: [{
+            data: Object.values(typeCounts),
+            backgroundColor: ['#6366f1', '#f59e0b', '#10b981', '#ec4899'],
+            borderWidth: 0
+          }]
+        },
+        options: { responsive: true, maintainAspectRatio: false, cutout: '70%' }
+      });
+    }
+
+    // Metrics Calculation
+    function updateMetrics() {
+      const filteredListings = dbListings.filter(l => l.agent_id === currentAgentId);
+      const filteredLeads = dbLeads.filter(l => l.agent_id === currentAgentId);
+
+      document.getElementById("statTotalListings").innerText = filteredListings.length;
+      document.getElementById("statTotalLeads").innerText = filteredLeads.length;
+
+      let highMatchCount = 0;
+      filteredLeads.forEach(lead => {
+        filteredListings.forEach(listing => {
+          if (calculateMatchScore(lead, listing) >= 60) highMatchCount++;
+        });
+      });
+
+      document.getElementById("statTotalMatches").innerText = highMatchCount;
+    }
+
+    // Smart Matching Algorithm
+    function calculateMatchScore(lead, listing) {
+      let score = 0;
+      if (lead.property_type.toLowerCase() === listing.type.toLowerCase()) score += 30;
+
+      if (listing.price <= lead.max_budget) score += 30;
+      else if (listing.price <= lead.max_budget * 1.10) score += 15;
+
+      const locLead = lead.target_location.toLowerCase();
+      const locList = listing.location.toLowerCase();
+      if (locList.includes(locLead) || locLead.includes(locList)) score += 20;
+
+      if (listing.bedrooms >= lead.min_bedrooms) score += 10;
+      if (listing.bathrooms >= lead.min_bathrooms) score += 10;
+
+      return score;
+    }
+
+    function populateLeadSelectOptions() {
+      const select = document.getElementById("matchLeadSelect");
+      const agentLeads = dbLeads.filter(l => l.agent_id === currentAgentId);
+
+      if (agentLeads.length === 0) {
+        select.innerHTML = `<option value="">-- Tidak Ada Lead untuk Uniq ID Ini --</option>`;
+        return;
+      }
+
+      select.innerHTML = agentLeads.map(l => `
+        <option value="${l.id}">${l.customer_name} (${l.property_type} - ${l.target_location} - Rp ${formatRupiahShort(l.max_budget)})</option>
+      `).join("");
+    }
+
+    function runMatching() {
+      const select = document.getElementById("matchLeadSelect");
+      const leadId = select.value;
+      const resultsContainer = document.getElementById("matchingResultsContainer");
+      const selectedLeadCard = document.getElementById("selectedLeadCard");
+
+      if (!leadId) {
+        selectedLeadCard.innerHTML = `<p class="text-slate-500">Belum ada Lead terpilih.</p>`;
+        resultsContainer.innerHTML = `<div class="p-8 text-center text-slate-400">Silakan tambah lead terlebih dahulu.</div>`;
+        document.getElementById("matchCountBadge").innerText = "0 Match";
+        return;
+      }
+
+      const lead = dbLeads.find(l => l.id === leadId);
+      if (!lead) return;
+
+      selectedLeadCard.innerHTML = `
+        <div class="flex justify-between items-start">
+          <span class="font-bold text-indigo-900">${lead.customer_name}</span>
+          <span class="px-2 py-0.5 bg-indigo-200 text-indigo-800 rounded text-[10px] font-semibold">${lead.id}</span>
+        </div>
+        <p class="text-slate-600"><strong>Req:</strong> ${lead.property_type} @ ${lead.target_location}</p>
+        <p class="text-slate-600"><strong>Max Budget:</strong> Rp ${formatRupiah(lead.max_budget)}</p>
+        <p class="text-slate-600"><strong>Min Spesifikasi:</strong> ${lead.min_bedrooms} KT / ${lead.min_bathrooms} KM</p>
+        <p class="text-slate-500 text-[10px]">Kontak WA Buyer: +${lead.customer_phone}</p>
+      `;
+
+      const agentListings = dbListings.filter(l => l.agent_id === currentAgentId);
+      const scoredListings = agentListings.map(listing => ({
+        ...listing,
+        score: calculateMatchScore(lead, listing)
+      })).sort((a, b) => b.score - a.score);
+
+      document.getElementById("matchCountBadge").innerText = `${scoredListings.length} Match Dianalisis`;
+
+      if (scoredListings.length === 0) {
+        resultsContainer.innerHTML = `<div class="p-8 text-center text-slate-400">Belum ada listing properti pada Uniq ID ini.</div>`;
+        return;
+      }
+
+      resultsContainer.innerHTML = scoredListings.map(item => {
+        let scoreBadgeClass = "bg-emerald-100 text-emerald-800 border-emerald-300";
+        if (item.score < 60 && item.score >= 40) scoreBadgeClass = "bg-amber-100 text-amber-800 border-amber-300";
+        if (item.score < 40) scoreBadgeClass = "bg-rose-100 text-rose-800 border-rose-300";
+
+        const waMsg = encodeURIComponent(
+          `Halo ${lead.customer_name},\n\nSaya menemukan properti yang sangat cocok dengan kriteria pencarian Anda:\n\n` +
+          `🏡 *${item.title}*\n` +
+          `📍 Lokasi: ${item.location}\n` +
+          `💰 Harga: Rp ${formatRupiah(item.price)}\n` +
+          `🛏 Spesifikasi: ${item.bedrooms} KT | ${item.bathrooms} KM | LT ${item.land_size}m²\n\n` +
+          `Apakah Anda berminat untuk menjadwalkan survei ke lokasi?`
+        );
+
+        return `
+          <div class="bg-slate-50 rounded-2xl p-4 border border-slate-200 hover:border-indigo-300 transition shadow-sm flex flex-col sm:flex-row justify-between gap-4">
+            <div class="space-y-2 flex-1">
+              <div class="flex items-center space-x-2">
+                <span class="px-2 py-0.5 rounded border text-[11px] font-extrabold ${scoreBadgeClass}">
+                  Match Score: ${item.score}%
+                </span>
+                <span class="text-xs text-slate-400">• ${item.id}</span>
+                <span class="px-2 py-0.5 bg-slate-200 text-slate-700 rounded text-[10px] font-medium">${item.type}</span>
+              </div>
+
+              <h3 class="text-xs font-bold text-slate-800">${item.title}</h3>
+              
+              <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 text-xs text-slate-600">
+                <div>📍 <strong>Lokasi:</strong> ${item.location}</div>
+                <div>💰 <strong>Harga:</strong> Rp ${formatRupiah(item.price)}</div>
+                <div>📐 <strong>Spesifikasi:</strong> ${item.bedrooms}KT / ${item.bathrooms}KM / ${item.land_size}m²</div>
+              </div>
+
+              <p class="text-[11px] text-slate-500">Pemilik (Owner): ${item.owner_name} (+${item.owner_phone})</p>
+            </div>
+
+            <div class="flex sm:flex-col justify-end items-end gap-2 border-t sm:border-t-0 pt-2 sm:pt-0 border-slate-200">
+              <a href="https://wa.me/${lead.customer_phone}?text=${waMsg}" target="_blank" class="w-full sm:w-auto bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-3 py-2 rounded-xl transition flex items-center justify-center space-x-1">
+                <i data-lucide="message-square" class="w-3.5 h-3.5"></i>
+                <span>Kirim Rekomendasi WA</span>
+              </a>
+            </div>
+          </div>
+        `;
+      }).join("");
+
+      lucide.createIcons();
+    }
+
+    // Tables Rendering
+    function renderListingsTable() {
+      const tbody = document.getElementById("listingsTableBody");
+      const search = document.getElementById("searchListingInput").value.toLowerCase();
+      
+      const filtered = dbListings.filter(l => 
+        l.agent_id === currentAgentId &&
+        (l.title.toLowerCase().includes(search) || l.location.toLowerCase().includes(search) || l.type.toLowerCase().includes(search))
+      );
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7" class="p-6 text-center text-slate-400">Tidak ada data listing properti.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = filtered.map(item => `
+        <tr class="hover:bg-slate-50/80 transition">
+          <td class="p-3 font-mono text-slate-500">${item.id}<br><span class="text-[10px] text-slate-400">${formatDate(item.created_at)}</span></td>
+          <td class="p-3 font-semibold text-slate-800">${item.title}<br><span class="inline-block px-1.5 py-0.5 bg-slate-100 text-slate-600 rounded text-[10px] font-normal">${item.type}</span></td>
+          <td class="p-3 text-slate-600">${item.location}</td>
+          <td class="p-3 font-bold text-slate-800">Rp ${formatRupiah(item.price)}</td>
+          <td class="p-3 text-slate-600">${item.bedrooms} KT / ${item.bathrooms} KM / ${item.land_size} m²</td>
+          <td class="p-3 text-slate-600">${item.owner_name}<br><span class="text-[10px] text-slate-400">+${item.owner_phone}</span></td>
+          <td class="p-3 text-right">
+            <button onclick="deleteListing('${item.id}')" class="p-1.5 text-rose-600 hover:bg-rose-50 rounded transition" title="Hapus Listing">
+              <i data-lucide="trash-2" class="w-4 h-4"></i>
+            </button>
+          </td>
+        </tr>
+      `).join("");
+
+      lucide.createIcons();
+    }
+
+    function renderLeadsTable() {
+      const tbody = document.getElementById("leadsTableBody");
+      const search = document.getElementById("searchLeadInput").value.toLowerCase();
+
+      const filtered = dbLeads.filter(l => 
+        l.agent_id === currentAgentId &&
+        (l.customer_name.toLowerCase().includes(search) || l.target_location.toLowerCase().includes(search) || l.property_type.toLowerCase().includes(search))
+      );
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7" class="p-6 text-center text-slate-400">Tidak ada data leads customer.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = filtered.map(item => `
+        <tr class="hover:bg-slate-50/80 transition">
+          <td class="p-3 font-mono text-slate-500">${item.id}<br><span class="text-[10px] text-slate-400">${formatDate(item.created_at)}</span></td>
+          <td class="p-3 font-semibold text-slate-800">${item.customer_name}<br><span class="text-[10px] text-slate-400">+${item.customer_phone}</span></td>
+          <td class="p-3"><span class="px-2 py-0.5 bg-amber-50 text-amber-700 rounded text-[10px] font-semibold">${item.property_type}</span></td>
+          <td class="p-3 text-slate-600">${item.target_location}</td>
+          <td class="p-3 font-bold text-slate-800">Rp ${formatRupiah(item.max_budget)}</td>
+          <td class="p-3 text-slate-600">Min. ${item.min_bedrooms} KT / ${item.min_bathrooms} KM</td>
+          <td class="p-3 text-right">
+            <button onclick="deleteLead('${item.id}')" class="p-1.5 text-rose-600 hover:bg-rose-50 rounded transition" title="Hapus Lead">
+              <i data-lucide="trash-2" class="w-4 h-4"></i>
+            </button>
+          </td>
+        </tr>
+      `).join("");
+
+      lucide.createIcons();
+    }
+
+    // WA Chat Simulator Engine
+    function focusSimulatorInput() {
+      const simSection = document.getElementById('simulasi');
+      const inputEl = document.getElementById('sim-input');
+      const containerEl = document.getElementById('input-container');
+
+      simSection.scrollIntoView({ behavior: 'smooth' });
+
+      setTimeout(() => {
+        inputEl.focus();
+        containerEl.classList.add('highlight-ring');
+        setTimeout(() => containerEl.classList.remove('highlight-ring'), 3000);
+      }, 500);
+    }
+
+    function runSimChat() {
+      const input = document.getElementById('sim-input');
+      const chatBox = document.getElementById('sim-chat-box');
+      const val = input.value.trim();
+      
+      if (!val) return;
+
+      const userBubble = document.createElement('div');
+      userBubble.className = "bg-[#dcf8c6] p-2.5 rounded-xl shadow-sm max-w-[85%] ml-auto chat-bubble text-slate-800";
+      userBubble.innerText = val;
+      chatBox.appendChild(userBubble);
+
+      input.value = '';
+      chatBox.scrollTop = chatBox.scrollHeight;
+
+      setTimeout(() => {
+        const botBubble = document.createElement('div');
+        botBubble.className = "bg-white p-2.5 rounded-xl shadow-sm max-w-[88%] chat-bubble font-medium text-indigo-950 border border-slate-100";
+        
+        // AI NLP Parsing Simulation Logic
+        const lower = val.toLowerCase();
+        if (lower.includes("jual") || lower.includes("listing")) {
+          const newListing = {
+            id: `LST-${Math.floor(100 + Math.random() * 900)}`,
+            agent_id: currentAgentId,
+            title: val.length > 30 ? val.substring(0, 30) + "..." : val,
+            type: lower.includes("ruko") ? "Ruko" : (lower.includes("apartemen") ? "Apartemen" : "Rumah"),
+            location: lower.includes("timur") ? "Surabaya Timur" : "Surabaya Barat",
+            price: extractPriceFromString(val) || 1500000000,
+            bedrooms: 3,
+            bathrooms: 2,
+            land_size: 100,
+            owner_name: "Owner WA",
+            owner_phone: "6281299887766",
+            created_at: new Date().toISOString()
+          };
+          dbListings.unshift(newListing);
+          saveListings();
+          botBubble.innerHTML = `✅ <b>Listing Berhasil Disimpan!</b><br>Tersimpan di Uniq ID Agent (${currentAgentId}) & terupdate ke Dashboard.`;
+        } else {
+          const newLead = {
+            id: `LED-${Math.floor(100 + Math.random() * 900)}`,
+            agent_id: currentAgentId,
+            customer_name: "Buyer WA Lead",
+            customer_phone: "6285566778899",
+            property_type: lower.includes("ruko") ? "Ruko" : (lower.includes("apartemen") ? "Apartemen" : "Rumah"),
+            target_location: lower.includes("timur") ? "Surabaya Timur" : "Surabaya Barat",
+            max_budget: extractPriceFromString(val) || 2000000000,
+            min_bedrooms: 3,
+            min_bathrooms: 2,
+            created_at: new Date().toISOString()
+          };
+          dbLeads.unshift(newLead);
+          saveLeads();
+          botBubble.innerHTML = `✅ <b>Buyer Lead Request Disimpan!</b><br>AI telah mencocokkan listing yang sesuai di Dashboard.`;
+        }
+
+        chatBox.appendChild(botBubble);
+        chatBox.scrollTop = chatBox.scrollHeight;
+        refreshDashboardUI();
+      }, 700);
+    }
+
+    function extractPriceFromString(str) {
+      if (str.includes("1.8M") || str.includes("1.8m")) return 1800000000;
+      if (str.includes("2.5M") || str.includes("2.5m")) return 2500000000;
+      if (str.includes("2M") || str.includes("2m")) return 2000000000;
+      return 1500000000;
+    }
+
+    // Live Social Proof Generator
+    const mockActivities = [
+      { title: "New Listing Received", desc: '"Rumah Citraland 2.5M"' },
+      { title: "New Buyer Request", desc: '"Cari Ruko MERR Budget 3M"' },
+      { title: "Matching Found (90%)", desc: '"Apartemen Sungkono Lagoon"' },
+      { title: "Listing Sync Success", desc: '"Tanah MERR 150m2"' }
+    ];
+
+    function triggerLivePopUp() {
+      const popup = document.getElementById('live-popup');
+      const title = document.getElementById('popup-title');
+      const desc = document.getElementById('popup-desc');
+
+      const rand = mockActivities[Math.floor(Math.random() * mockActivities.length)];
+      title.innerText = rand.title;
+      desc.innerHTML = `${rand.desc} • <span class="text-indigo-600 font-semibold">Uniq ID Agent</span>`;
+
+      popup.classList.remove('translate-y-20', 'opacity-0');
+      popup.classList.add('translate-y-0', 'opacity-100');
+
+      setTimeout(() => {
+        popup.classList.remove('translate-y-0', 'opacity-100');
+        popup.classList.add('translate-y-20', 'opacity-0');
+      }, 3500);
+    }
+
+    // Manual Add Handlers
+    function handleManualAddListing(e) {
+      e.preventDefault();
+      const newListing = {
+        id: `LST-${Math.floor(100 + Math.random() * 900)}`,
+        agent_id: currentAgentId,
+        title: document.getElementById("addListTitle").value.trim(),
+        type: document.getElementById("addListType").value,
+        price: parseFloat(document.getElementById("addListPrice").value) || 0,
+        location: document.getElementById("addListLocation").value.trim(),
+        bedrooms: parseInt(document.getElementById("addListKT").value) || 0,
+        bathrooms: parseInt(document.getElementById("addListKM").value) || 0,
+        land_size: parseInt(document.getElementById("addListLT").value) || 0,
+        owner_name: document.getElementById("addListOwner").value.trim(),
+        owner_phone: document.getElementById("addListPhone").value.trim(),
+        created_at: new Date().toISOString()
+      };
+
+      dbListings.unshift(newListing);
+      saveListings();
+      closeModal("addListingModal");
+      refreshDashboardUI();
+      showToast("Listing berhasil disimpan ke Uniq ID Agent", "success");
+    }
+
+    function handleManualAddLead(e) {
+      e.preventDefault();
+      const newLead = {
+        id: `LED-${Math.floor(100 + Math.random() * 900)}`,
+        agent_id: currentAgentId,
+        customer_name: document.getElementById("addLeadName").value.trim(),
+        customer_phone: document.getElementById("addLeadPhone").value.trim(),
+        property_type: document.getElementById("addLeadType").value,
+        max_budget: parseFloat(document.getElementById("addLeadBudget").value) || 0,
+        target_location: document.getElementById("addLeadLocation").value.trim(),
+        min_bedrooms: parseInt(document.getElementById("addLeadKT").value) || 0,
+        min_bathrooms: parseInt(document.getElementById("addLeadKM").value) || 0,
+        created_at: new Date().toISOString()
+      };
+
+      dbLeads.unshift(newLead);
+      saveLeads();
+      closeModal("addLeadModal");
+      refreshDashboardUI();
+      showToast("Lead buyer berhasil disimpan ke Uniq ID Agent", "success");
+    }
+
+    function deleteListing(id) {
+      if (confirm(`Hapus listing ${id}?`)) {
+        dbListings = dbListings.filter(l => l.id !== id);
+        saveListings();
+        refreshDashboardUI();
+        showToast("Listing dihapus", "info");
+      }
+    }
+
+    function deleteLead(id) {
+      if (confirm(`Hapus lead ${id}?`)) {
+        dbLeads = dbLeads.filter(l => l.id !== id);
+        saveLeads();
+        refreshDashboardUI();
+        showToast("Lead dihapus", "info");
+      }
+    }
+
+    // Helper Utilities
+    function switchTab(tabName) {
+      ["matching", "listings", "leads"].forEach(t => {
+        document.getElementById(`tab${capitalize(t)}`).classList.add("hidden");
+        const btn = document.getElementById(`tabBtn${capitalize(t)}`);
+        btn.classList.remove("border-indigo-600", "text-indigo-600", "font-bold");
+        btn.classList.add("border-transparent", "text-slate-500");
+      });
+
+      document.getElementById(`tab${capitalize(tabName)}`).classList.remove("hidden");
+      const activeBtn = document.getElementById(`tabBtn${capitalize(tabName)}`);
+      activeBtn.classList.remove("border-transparent", "text-slate-500");
+      activeBtn.classList.add("border-indigo-600", "text-indigo-600", "font-bold");
+    }
+
+    function capitalize(str) { return str.charAt(0).toUpperCase() + str.slice(1); }
+    function openModal(id) { document.getElementById(id).classList.remove("hidden"); }
+    function closeModal(id) { document.getElementById(id).classList.add("hidden"); }
+    function formatRupiah(num) { return new Intl.NumberFormat("id-ID").format(num); }
+    function formatRupiahShort(num) {
+      if (num >= 1000000000) return (num / 1000000000).toFixed(1) + " M";
+      if (num >= 1000000) return (num / 1000000).toFixed(0) + " Jt";
+      return num;
+    }
+    function formatDate(iso) {
+      return new Date(iso).toLocaleDateString("id-ID", { day: "2-digit", month: "short", year: "2-digit" });
+    }
+
+    function showToast(message, type = "info") {
+      const container = document.getElementById("toastContainer");
+      const toast = document.createElement("div");
+      
+      let bgColor = "bg-slate-900 text-white";
+      if (type === "success") bgColor = "bg-emerald-600 text-white";
+
+      toast.className = `${bgColor} px-4 py-2.5 rounded-xl shadow-lg text-xs font-bold flex items-center space-x-2 transition-all duration-300 transform translate-y-2 opacity-0`;
+      toast.innerHTML = `<span>${message}</span>`;
+
+      container.appendChild(toast);
+      setTimeout(() => toast.classList.remove("translate-y-2", "opacity-0"), 10);
+      setTimeout(() => {
+        toast.classList.add("opacity-0");
+        setTimeout(() => toast.remove(), 300);
+      }, 3000);
+    }
+  </script>
+</body>
+</html>
