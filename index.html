@@ -45,6 +45,7 @@
     .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
   </style>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  
 </head>
 <body class="bg-slate-50 text-slate-800 antialiased min-h-screen overflow-x-hidden">
 
@@ -1319,15 +1320,29 @@
     }
   </script>
   <script>
-  // Ganti teks di bawah ini dengan Project URL dan Anon Key milikmu yang disalin dari Supabase
-  const SUPABASE_URL = 'https://kqirvglyethqbzduzrga.supabase.co';
-  const SUPABASE_KEY = 'sb_publishable__AHsE5kzpkQz_5ZAktwwuw_7Zoyeiuy';
-  
-  // Menghubungkan client Supabase
-  const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+  // 1. Masukkan kredensial Supabase Anda di sini
+  const SUPABASE_URL = 'https://kqirvglyethqbzduzrga.supabase.co'; 
+  const SUPABASE_ANON_KEY = 'sb_publishable__AHsE5kzpkQz_5ZAktwwuw_7Zoyeiuy';
 
-  // Cek koneksi di console browser
-  console.log('Supabase berhasil terhubung!');
+  // 2. Inisialisasi client Supabase
+  const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+  // 3. Contoh fungsi untuk tes koneksi / mengambil data dari tabel Anda
+  async function tesKoneksi() {
+    // Ganti 'nama_tabel' dengan nama tabel yang Anda buat di Supabase
+    const { data, error } = await supabase
+      .from('nama_tabel')
+      .select('*');
+
+    if (error) {
+      console.error('Koneksi Gagal:', error.message);
+    } else {
+      console.log('Koneksi Berhasil! Data dari Supabase:', data);
+    }
+  }
+
+  // Jalankan tes koneksi saat halaman dimuat
+  tesKoneksi();
 </script>
 </body>
 </html>
