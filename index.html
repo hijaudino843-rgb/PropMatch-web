@@ -807,26 +807,39 @@
     let agentChart = null;
 
     document.addEventListener("DOMContentLoaded", () => {
-      loadStorageData();
       lucide.createIcons();
       setTimeout(triggerLivePopUp, 2000);
       setInterval(triggerLivePopUp, 10000);
     });
 
     // Load & Save LocalStorage
-    function loadStorageData() {
-      const storedListings = localStorage.getItem("propmatch_listings");
-      const storedLeads = localStorage.getItem("propmatch_leads");
-
-      dbListings = storedListings ? JSON.parse(storedListings) : [...SEED_LISTINGS];
-      dbLeads = storedLeads ? JSON.parse(storedLeads) : [...SEED_LEADS];
-
-      if (!storedListings) saveListings();
-      if (!storedLeads) saveLeads();
+    async function loadStorageData() {
+      const [l1, l2] = await Promise.all([
+        sb.from("listings").select("*").order("created_at", { ascending: false }),
+        sb.from("leads").select("*").order("created_at", { ascending: false })
+      ]);
+      if (l1.error || l2.error) {
+        showToast("Gagal memuat data: " + (l1.error || l2.error).message, "error");
+        return;
+      }
+      dbListings = l1.data.map(r => ({ ...r, db_id: r.id, id: "LST-" + r.id }));
+      dbLeads = l2.data.map(r => ({ ...r, db_id: r.id, id: "LED-" + r.id }));
+      refreshDashboardUI();
     }
 
-    function saveListings() { localStorage.setItem("propmatch_listings", JSON.stringify(dbListings)); }
-    function saveLeads() { localStorage.setItem("propmatch_leads", JSON.stringify(dbLeads)); }
+    async function persistRow(table, prefix, arr, obj) {
+      const { id, db_id, ...row } = obj;
+      const { data, error } = await sb.from(table).insert(row).select().single();
+      if (error) {
+        showToast("Gagal simpan ke Supabase: " + error.message, "error");
+        const i = arr.indexOf(obj); if (i > -1) arr.splice(i, 1);
+      } else {
+        obj.db_id = data.id; obj.id = prefix + data.id;
+      }
+      refreshDashboardUI();
+    }
+    function saveListings() {}
+    function saveLeads() {}
 
     // Page Router
     function showPage(pageId) {
@@ -1149,7 +1162,7 @@
             created_at: new Date().toISOString()
           };
           dbListings.unshift(newListing);
-          saveListings();
+          persistRow("listings", "LST-", dbListings, newListing);
           botBubble.innerHTML = `✅ <b>Listing Berhasil Disimpan!</b><br>Tersimpan di Uniq ID Agent (${currentAgentId}) & terupdate ke Dashboard.`;
         } else {
           const newLead = {
@@ -1165,7 +1178,7 @@
             created_at: new Date().toISOString()
           };
           dbLeads.unshift(newLead);
-          saveLeads();
+          persistRow("leads", "LED-", dbLeads, newLead);
           botBubble.innerHTML = `✅ <b>Buyer Lead Request Disimpan!</b><br>AI telah mencocokkan listing yang sesuai di Dashboard.`;
         }
 
@@ -1227,7 +1240,7 @@
       };
 
       dbListings.unshift(newListing);
-      saveListings();
+      persistRow("listings", "LST-", dbListings, newListing);
       closeModal("addListingModal");
       refreshDashboardUI();
       showToast("Listing berhasil disimpan ke Uniq ID Agent", "success");
@@ -1249,7 +1262,7 @@
       };
 
       dbLeads.unshift(newLead);
-      saveLeads();
+      persistRow("leads", "LED-", dbLeads, newLead);
       closeModal("addLeadModal");
       refreshDashboardUI();
       showToast("Lead buyer berhasil disimpan ke Uniq ID Agent", "success");
@@ -1258,7 +1271,7 @@
     function deleteListing(id) {
       if (confirm(`Hapus listing ${id}?`)) {
         dbListings = dbListings.filter(l => l.id !== id);
-        saveListings();
+        sb.from("listings").delete().eq("id", parseInt(id.replace("LST-", ""))).then(({error}) => { if (error) showToast("Gagal hapus: " + error.message, "error"); });
         refreshDashboardUI();
         showToast("Listing dihapus", "info");
       }
@@ -1267,7 +1280,7 @@
     function deleteLead(id) {
       if (confirm(`Hapus lead ${id}?`)) {
         dbLeads = dbLeads.filter(l => l.id !== id);
-        saveLeads();
+        sb.from("leads").delete().eq("id", parseInt(id.replace("LED-", ""))).then(({error}) => { if (error) showToast("Gagal hapus: " + error.message, "error"); });
         refreshDashboardUI();
         showToast("Lead dihapus", "info");
       }
@@ -1307,6 +1320,7 @@
       
       let bgColor = "bg-slate-900 text-white";
       if (type === "success") bgColor = "bg-emerald-600 text-white";
+      if (type === "error") bgColor = "bg-rose-600 text-white";
 
       toast.className = `${bgColor} px-4 py-2.5 rounded-xl shadow-lg text-xs font-bold flex items-center space-x-2 transition-all duration-300 transform translate-y-2 opacity-0`;
       toast.innerHTML = `<span>${message}</span>`;
@@ -1320,29 +1334,10 @@
     }
   </script>
   <script>
-  // 1. Masukkan kredensial Supabase Anda di sini
-  const SUPABASE_URL = 'https://kqirvglyethqbzduzrga.supabase.co'; 
+  const SUPABASE_URL = 'https://kqirvglyethqbzduzrga.supabase.co';
   const SUPABASE_ANON_KEY = 'sb_publishable__AHsE5kzpkQz_5ZAktwwuw_7Zoyeiuy';
-
-  // 2. Inisialisasi client Supabase
-  const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-  // 3. Contoh fungsi untuk tes koneksi / mengambil data dari tabel Anda
-  async function tesKoneksi() {
-    // Ganti 'nama_tabel' dengan nama tabel yang Anda buat di Supabase
-    const { data, error } = await supabase
-      .from('nama_tabel')
-      .select('*');
-
-    if (error) {
-      console.error('Koneksi Gagal:', error.message);
-    } else {
-      console.log('Koneksi Berhasil! Data dari Supabase:', data);
-    }
-  }
-
-  // Jalankan tes koneksi saat halaman dimuat
-  tesKoneksi();
+  const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  loadStorageData();
 </script>
 </body>
 </html>
