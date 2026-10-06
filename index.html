@@ -85,9 +85,13 @@
       </div>
 
       <div class="flex items-center gap-3">
-        <button onclick="smartLogin()" class="text-sm font-bold text-slate-700 hover:text-indigo-600 px-3 py-2">
+        <button id="loginNavBtn" onclick="smartLogin()" class="text-sm font-bold text-slate-700 hover:text-indigo-600 px-3 py-2">
           Masuk
         </button>
+        <button id="navLogoutBtn" onclick="doLogout()" class="hidden text-sm font-bold text-slate-700 hover:text-rose-600 px-3 py-2">
+          Keluar
+        </button>
+        <button class="profile-avatar hidden w-9 h-9 bg-indigo-600 text-white rounded-full flex items-center justify-center font-extrabold text-sm shadow-md shadow-indigo-200 transition hover:scale-105" onclick="toggleProfileMenu(event)" title="Profil Saya"></button>
         <button onclick="enterDemoMode()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm px-5 py-2.5 rounded-full shadow-md shadow-indigo-200 transition-all hover:scale-105">
           Coba Dashboard →
         </button>
@@ -402,7 +406,11 @@
           <div class="w-9 h-9 bg-indigo-600 rounded-xl flex items-center justify-center text-white font-extrabold text-lg">PM</div>
           <span class="font-extrabold text-lg text-slate-100">PropMatch <span class="text-indigo-400">AI</span></span>
         </div>
-        <button onclick="showPage('landing-page')" class="text-xs font-bold text-slate-400 hover:text-white transition">← Kembali ke Beranda</button>
+        <div class="flex items-center gap-3">
+          <button id="pricingLogoutBtn" onclick="doLogout()" class="hidden text-xs font-bold text-slate-400 hover:text-rose-400 transition">Keluar</button>
+          <button class="profile-avatar hidden w-9 h-9 bg-indigo-600 text-white rounded-full flex items-center justify-center font-extrabold text-sm shadow-md transition hover:scale-105" onclick="toggleProfileMenu(event)" title="Profil Saya"></button>
+          <button onclick="showPage('landing-page')" class="text-xs font-bold text-slate-400 hover:text-white transition">← Kembali</button>
+        </div>
       </div>
     </header>
 
@@ -528,6 +536,8 @@
               <span class="text-xs text-slate-400 mr-2 hidden sm:inline">Active Uniq ID:</span>
               <span id="agentLabel" class="text-xs font-semibold text-slate-200 px-2 py-1">-</span>
             </div>
+
+            <button class="profile-avatar hidden w-8 h-8 bg-indigo-600 text-white rounded-full flex items-center justify-center font-extrabold text-xs shadow-md" onclick="toggleProfileMenu(event)" title="Profil Saya"></button>
 
             <button id="logoutBtn" onclick="handleLogout()" class="text-xs bg-slate-800 hover:bg-slate-700 px-3 py-2 rounded-lg text-slate-300">
               Keluar
@@ -888,6 +898,26 @@
   </div>
 
 
+  <!-- MENU PROFIL (muncul saat klik avatar) -->
+  <div id="profileMenu" class="hidden fixed z-[60] w-64 bg-white rounded-2xl shadow-2xl border border-slate-200 p-4 space-y-3 text-left">
+    <div class="flex items-start gap-3">
+      <div id="pmAvatar" class="w-10 h-10 shrink-0 bg-indigo-600 text-white rounded-full flex items-center justify-center font-extrabold text-sm">PM</div>
+      <div class="min-w-0">
+        <p class="text-[10px] font-extrabold text-emerald-600 uppercase tracking-wider">✓ Sudah Login</p>
+        <p id="pmName" class="text-sm font-bold text-slate-800 leading-tight truncate">-</p>
+        <button onclick="copyProfilePhone()" class="text-[11px] text-slate-500 hover:text-indigo-600 font-semibold flex items-center gap-1 mt-0.5">
+          <span id="pmPhone" class="truncate">-</span>
+          <i data-lucide="copy" class="w-3 h-3 shrink-0"></i>
+        </button>
+      </div>
+    </div>
+    <div id="pmPlan" class="text-[11px] px-3 py-2 rounded-xl bg-amber-50 text-amber-700 font-semibold">⏳ Belum berlangganan</div>
+    <button id="pmDashboardBtn" onclick="showPage('dashboard-page')" class="hidden w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs py-2.5 rounded-xl transition">Buka Dashboard →</button>
+    <button onclick="showPage('pricing-page')" class="w-full border-2 border-slate-200 hover:border-indigo-300 text-slate-700 font-bold text-xs py-2.5 rounded-xl transition">Lihat Harga</button>
+    <button onclick="doLogout()" class="w-full bg-rose-50 hover:bg-rose-100 text-rose-600 font-bold text-xs py-2.5 rounded-xl transition">Keluar</button>
+  </div>
+
+
   <!-- TOAST CONTAINER -->
   <div id="toastContainer" class="fixed bottom-5 right-5 space-y-2 z-50"></div>
 
@@ -1058,6 +1088,7 @@
     let demoMode = false;                 // true = sedang melihat dashboard contoh (tanpa login)
     let currentPlan = 'free';             // paket langganan dari tabel agents (free/pro/enterprise)
     let currentPlanExpiresAt = null;      // masa berlaku langganan (opsional)
+    let profileAgent = { name: null, phone: null }; // profil utk avatar (teks DB dirender via textContent = aman XSS)
     const DEMO_AGENT_ID = "6281234567890"; // Uniq ID agent untuk data dummy demo
     const PLAN_LABELS = { free: 'Starter', trial: 'Trial', pro: 'Pro Agent', enterprise: 'Enterprise' };
 
@@ -1065,6 +1096,14 @@
       lucide.createIcons();
       setTimeout(triggerLivePopUp, 2000);
       setInterval(triggerLivePopUp, 10000);
+
+      // Tutup kartu profil saat klik di luar
+      document.addEventListener('click', (ev) => {
+        const menu = document.getElementById('profileMenu');
+        if (!menu.classList.contains('hidden') && !menu.contains(ev.target) && !ev.target.closest('.profile-avatar')) {
+          hideProfileMenu();
+        }
+      });
     });
 
     // Load & Save LocalStorage
@@ -1122,6 +1161,7 @@
 
       if (pageId === 'dashboard-page') refreshDashboardUI();
       if (pageId === 'pricing-page') renderPricingState();
+      renderProfile(); // render ulang avatar/profil setiap pindah halaman
     }
 
     function smartLogin() {
@@ -1156,6 +1196,73 @@
     function handleLogout() {
       if (demoMode) exitDemo();
       else doLogout();
+    }
+
+    // ====== PROFIL / AVATAR (navbar & header) ======
+    function avatarLabel() {
+      const name = String(profileAgent.name || '').trim();
+      if (name) return name.charAt(0).toUpperCase();
+      const phone = String(profileAgent.phone || '');
+      return phone.length >= 2 ? phone.slice(-2) : 'PM';
+    }
+
+    function hideProfileMenu() {
+      document.getElementById('profileMenu').classList.add('hidden');
+    }
+
+    function toggleProfileMenu(e) {
+      e.stopPropagation();
+      const menu = document.getElementById('profileMenu');
+      if (!menu.classList.contains('hidden')) { hideProfileMenu(); return; }
+      const r = e.currentTarget.getBoundingClientRect();
+      menu.style.top = (r.bottom + 8) + 'px';
+      menu.style.left = Math.max(8, Math.min(r.right - 256, window.innerWidth - 264)) + 'px';
+      menu.classList.remove('hidden');
+      lucide.createIcons();
+    }
+
+    function renderProfileMenu() {
+      const plan = currentPlan || 'free';
+      const active = hasActiveSubscription();
+      const expiry = currentPlanExpiresAt ? ' s/d ' + formatDate(currentPlanExpiresAt) : '';
+      document.getElementById('pmAvatar').textContent = avatarLabel();
+      document.getElementById('pmName').textContent = String(profileAgent.name || 'Agent');
+      document.getElementById('pmPhone').textContent = profileAgent.phone ? '+' + profileAgent.phone : '-';
+      const planEl = document.getElementById('pmPlan');
+      if (active) {
+        planEl.className = 'text-[11px] px-3 py-2 rounded-xl bg-emerald-50 text-emerald-700 font-semibold';
+        planEl.textContent = '✅ Langganan aktif: ' + (PLAN_LABELS[plan] || plan) + expiry;
+      } else {
+        planEl.className = 'text-[11px] px-3 py-2 rounded-xl bg-amber-50 text-amber-700 font-semibold';
+        planEl.textContent = '⏳ Belum berlangganan';
+      }
+      document.getElementById('pmDashboardBtn').classList.toggle('hidden', !active);
+    }
+
+    function renderProfile() {
+      hideProfileMenu();
+      const logged = !!currentSession && !demoMode && !!currentAgentId;
+      document.querySelectorAll('.profile-avatar').forEach(el => el.classList.toggle('hidden', !logged));
+      const loginBtn = document.getElementById('loginNavBtn');
+      if (loginBtn) loginBtn.classList.toggle('hidden', logged);
+      const navLogout = document.getElementById('navLogoutBtn');
+      if (navLogout) navLogout.classList.toggle('hidden', !logged);
+      const priceLogout = document.getElementById('pricingLogoutBtn');
+      if (priceLogout) priceLogout.classList.toggle('hidden', !logged);
+      if (logged) {
+        const label = avatarLabel();
+        document.querySelectorAll('.profile-avatar').forEach(el => { el.textContent = label; });
+        renderProfileMenu();
+      }
+    }
+
+    async function copyProfilePhone() {
+      try {
+        await navigator.clipboard.writeText('+' + (profileAgent.phone || ''));
+        showToast('Nomor WA disalin', 'success');
+      } catch (e) {
+        showToast('Gagal menyalin nomor', 'error');
+      }
     }
 
 
@@ -1703,6 +1810,8 @@
     document.getElementById('demoBanner').classList.add('hidden');
     document.getElementById('logoutBtn').textContent = 'Keluar';
     document.getElementById('agentLabel').textContent = agent.name ? agent.name + ' (' + agent.phone + ')' : agent.phone;
+    profileAgent = { name: agent.name || null, phone: agent.phone || null };
+    renderProfile();
     await loadStorageData();
     startRealtime();
     return true;
@@ -1906,6 +2015,7 @@
     stopRealtime(); await sb.auth.signOut();
     currentSession = null; currentAgentId = null; dbListings = []; dbLeads = [];
     currentPlan = 'free'; currentPlanExpiresAt = null;
+    profileAgent = { name: null, phone: null };
     showPage('landing-page');
   }
 
@@ -1972,6 +2082,7 @@
     if (!agent) { showToast('Akun belum terdaftar. Hubungi admin.', 'error'); return; }
     currentPlan = agent.plan || 'free';
     currentPlanExpiresAt = agent.plan_expires_at || null;
+    renderProfile(); // refresh status langganan di kartu profil
     if (hasActiveSubscription()) {
       showToast('Langganan aktif! Membuka dashboard Anda...', 'success');
       showPage('dashboard-page');
