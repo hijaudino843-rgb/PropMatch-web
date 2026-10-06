@@ -323,7 +323,7 @@
         PM
       </div>
 
-      <h1 class="text-2xl font-bold text-slate-900 mb-1">Cek Status Akun & Langganan</h1>
+      <h1 class="text-2xl font-bold text-slate-900 mb-1">Cek Status Akun & Login PIN</h1>
       <p class="text-sm text-slate-500 mb-6">Masukkan nomor WhatsApp Anda untuk cek status akun.</p>
 
       <!-- STEP 1: Cek Nomor WA -->
@@ -334,27 +334,62 @@
         <p class="text-[11px] text-slate-400 text-center">Format: 62 di depan, contoh 6281234567890</p>
       </div>
 
-      <!-- STEP 2: Login PIN (muncul jika akun terdaftar) -->
-      <div id="pinLoginSection" class="hidden space-y-3 text-left">
-        <div id="accountStatusCard" class="rounded-2xl p-3.5 text-xs space-y-1.5"></div>
-        <label class="block text-xs font-semibold text-slate-600 mb-1">PIN (6 digit):</label>
-        <input id="pinInput" type="password" inputmode="numeric" maxlength="6" autocomplete="one-time-code" placeholder="••••••" onkeydown="if(event.key==='Enter')doPinLogin()" class="w-full p-3 border border-slate-200 rounded-xl text-xl font-black tracking-[0.5em] text-center outline-none focus:border-indigo-400">
-        <p id="loginError" class="text-xs text-rose-600 hidden"></p>
-        <button id="pinLoginBtn" onclick="doPinLogin()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm py-3 rounded-xl disabled:opacity-50">Masuk ke Dashboard</button>
-        <button onclick="resetPhoneCheck()" class="w-full text-xs text-slate-400 hover:text-slate-600 py-1">← Cek nomor lain</button>
-      </div>
-
-      <!-- STEP 3: Belum terdaftar → aktivasi via bot WA -->
+      <!-- STEP 2: Belum aktif → aktivasi via WA + polling otomatis tiap 3 detik -->
       <div id="notFoundSection" class="hidden space-y-3">
         <div class="bg-rose-50 border border-rose-100 rounded-2xl p-4 text-xs text-left space-y-1.5">
-          <p class="font-extrabold text-rose-700">❌ Nomor belum terdaftar</p>
-          <p class="text-slate-500">Aktivasi akun gratis & cepat via bot WhatsApp. Klik tombol di bawah — bot akan memandu aktivasi.</p>
+          <p class="font-extrabold text-rose-700">❌ Nomor belum aktif</p>
+          <p class="text-slate-500">Kirim kata <b>daftar</b> ke bot WhatsApp lewat tombol di bawah. Halaman ini otomatis lanjut begitu akun aktif.</p>
         </div>
         <a id="activateWaLl" target="_blank" rel="noopener" class="block w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm py-3 rounded-xl">Aktivasi via Bot WhatsApp →</a>
+        <div id="pollNote" class="hidden flex items-center justify-center gap-2 bg-indigo-50 border border-indigo-100 rounded-xl p-3 text-xs text-indigo-700 font-semibold">
+          <span class="w-3.5 h-3.5 border-2 border-indigo-600 border-t-transparent rounded-full animate-spin"></span>
+          Menunggu aktivasi dari bot… (dicek tiap 3 detik, maks 5 menit)
+        </div>
         <button onclick="resetPhoneCheck()" class="w-full text-xs text-slate-400 hover:text-slate-600 py-1">← Cek nomor lain</button>
       </div>
 
-      <a id="waLink" target="_blank" rel="noopener" class="hidden mt-4 block w-full text-center bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm py-3 rounded-xl">Buka chat bot WhatsApp</a>
+      <!-- STEP 3: Buat PIN (aktif_belum_pin) -->
+      <div id="pinSetupSection" class="hidden space-y-3 text-left">
+        <div id="pinSetupInfo" class="bg-emerald-50 border border-emerald-200 rounded-2xl p-3.5 text-xs space-y-1.5 text-emerald-800"></div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 mb-1">Buat PIN (4 digit):</label>
+          <input id="pinNew" type="password" inputmode="numeric" maxlength="4" autocomplete="new-password" placeholder="PIN baru" class="w-full p-3 border border-slate-200 rounded-xl text-lg font-black tracking-[0.3em] text-center outline-none focus:border-indigo-400">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 mb-1">Ulangi PIN:</label>
+          <input id="pinNew2" type="password" inputmode="numeric" maxlength="4" autocomplete="new-password" placeholder="Ulangi PIN" onkeydown="if(event.key==='Enter')saveNewPin()" class="w-full p-3 border border-slate-200 rounded-xl text-lg font-black tracking-[0.3em] text-center outline-none focus:border-indigo-400">
+        </div>
+        <p id="pinSetupError" class="hidden text-xs text-rose-600"></p>
+        <button id="pinSaveBtn" onclick="saveNewPin()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm py-3 rounded-xl disabled:opacity-50">Simpan PIN & Masuk</button>
+        <button onclick="resetPhoneCheck()" class="w-full text-xs text-slate-400 hover:text-slate-600 py-1">← Cek nomor lain</button>
+      </div>
+
+      <!-- STEP 4: Login PIN (aktif_ada_pin) -->
+      <div id="pinLoginSection" class="hidden space-y-3 text-left">
+        <div id="accountStatusCard" class="rounded-2xl p-3.5 text-xs space-y-1.5"></div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 mb-1">PIN:</label>
+          <input id="pinInput" type="password" inputmode="numeric" maxlength="4" autocomplete="one-time-code" placeholder="••••" onkeydown="if(event.key==='Enter')doPinLogin()" class="w-full p-3 border border-slate-200 rounded-xl text-xl font-black tracking-[0.5em] text-center outline-none focus:border-indigo-400">
+        </div>
+        <p id="loginError" class="text-xs text-rose-600 hidden"></p>
+        <button id="pinLoginBtn" onclick="doPinLogin()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm py-3 rounded-xl disabled:opacity-50">Masuk ke Dashboard</button>
+        <button onclick="showLupaPin()" class="w-full text-xs font-semibold text-amber-600 hover:text-amber-700 py-1">Lupa PIN?</button>
+        <button onclick="resetPhoneCheck()" class="w-full text-xs text-slate-400 hover:text-slate-600 py-1">← Cek nomor lain</button>
+      </div>
+
+      <!-- STEP 5: Lupa PIN → reset via bot -->
+      <div id="lupaPinSection" class="hidden space-y-3">
+        <div class="bg-amber-50 border border-amber-100 rounded-2xl p-4 text-xs text-left space-y-1.5">
+          <p class="font-extrabold text-amber-800">🔓 Lupa PIN?</p>
+          <p class="text-slate-500">Kirim kata <b>daftar</b> ke bot WA lewat tombol di bawah untuk reset PIN. Setelah itu buat PIN baru di sini.</p>
+        </div>
+        <a id="lupaPinWaLl" target="_blank" rel="noopener" class="block w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm py-3 rounded-xl">Kirim "daftar" ke Bot WA →</a>
+        <div id="lupaPollNote" class="hidden flex items-center justify-center gap-2 bg-indigo-50 border border-indigo-100 rounded-xl p-3 text-xs text-indigo-700 font-semibold">
+          <span class="w-3.5 h-3.5 border-2 border-indigo-600 border-t-transparent rounded-full animate-spin"></span>
+          Menunggu reset PIN dari bot…
+        </div>
+        <button onclick="resetPhoneCheck()" class="w-full text-xs text-slate-400 hover:text-slate-600 py-1">← Cek nomor lain</button>
+      </div>
     </div>
   </div>
 
@@ -1672,13 +1707,65 @@
     startRealtime();
     return true;
   }
-  // ====== CEK STATUS NOMOR WA + LOGIN PIN ======
+  // ====== CEK STATUS NOMOR WA + BUAT/LOGIN PIN ======
   let checkedPhone = null;
+  let pollTimer = null;
+
   function normalizePhone(raw) {
+    // Sama persis dengan normalisasi di bot (Normalisasi Pengirim): 08xx/8xx -> 62xx
     let p = (raw || '').replace(/[^0-9]/g, '');
     if (p.startsWith('0')) p = '62' + p.slice(1);
     if (p.startsWith('8')) p = '62' + p;
     return p;
+  }
+
+  // Panggil endpoint n8n: {phone} -> status | {phone, pin, op} -> set_pin / login
+  async function fetchStatusApi(body) {
+    if (!N8N_LOGIN_URL) { showToast('Konfigurasi N8N_LOGIN_URL belum diisi di index.html.', 'error'); return null; }
+    try {
+      const res = await fetch(N8N_LOGIN_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams(body),
+        cache: 'no-store'
+      });
+      const out = await res.json().catch(() => ({}));
+      return { ok: res.ok, ...out };
+    } catch (e) {
+      return { ok: false, error: 'Tidak bisa terhubung ke server login.' };
+    }
+  }
+
+  function hideAuthSections() {
+    ['phoneCheckSection', 'notFoundSection', 'pinSetupSection', 'pinLoginSection', 'lupaPinSection'].forEach(id => {
+      document.getElementById(id).classList.add('hidden');
+    });
+  }
+
+  function stopStatusPolling() {
+    if (pollTimer) { clearInterval(pollTimer); pollTimer = null; }
+    document.getElementById('pollNote').classList.add('hidden');
+    document.getElementById('lupaPollNote').classList.add('hidden');
+  }
+
+  // Polling tiap 3 detik, maks 5 menit — sampai status berubah (perbaikan bug tampilan tidak berubah)
+  function startStatusPolling(wanted, onOk, noteId = 'pollNote') {
+    stopStatusPolling();
+    const note = document.getElementById(noteId);
+    if (note) note.classList.remove('hidden');
+    const deadline = Date.now() + 5 * 60 * 1000;
+    pollTimer = setInterval(async () => {
+      const s = await fetchStatusApi({ phone: checkedPhone });
+      if (s && s.ok && s.status === wanted) {
+        stopStatusPolling();
+        onOk(s);
+        return;
+      }
+      if (Date.now() > deadline) {
+        stopStatusPolling();
+        showToast('Belum terdeteksi perubahan dalam 5 menit. Coba kirim ulang "daftar" ke bot WA.', 'info');
+      }
+    }, 3000);
   }
 
   async function checkPhoneStatus() {
@@ -1686,58 +1773,110 @@
     const btn = document.getElementById('checkPhoneBtn');
     const phone = normalizePhone(input.value);
     if (!/^628[0-9]{6,13}$/.test(phone)) { showToast('Nomor tidak valid. Contoh: 6281234567890', 'error'); return; }
+    checkedPhone = phone;
     btn.disabled = true; btn.textContent = 'Mengecek...';
     try {
-      const { data, error } = await sb.from('agents').select('*').eq('phone', phone).maybeSingle();
-      if (error) { showToast('Gagal cek akun: ' + error.message, 'error'); return; }
-      checkedPhone = phone;
-      if (!data) {
-        // Akun belum ada → aktivasi via bot WA
-        document.getElementById('phoneCheckSection').classList.add('hidden');
-        document.getElementById('notFoundSection').classList.remove('hidden');
-        const a = document.getElementById('activateWaLl');
-        if (BOT_WA) {
-          a.href = 'https://wa.me/' + BOT_WA + '?text=' + encodeURIComponent('daftar ' + phone);
-          a.onclick = null;
-        } else {
-          a.href = '#';
-          a.onclick = () => { showToast('Nomor bot WA belum dikonfigurasi (isi BOT_WA di index.html).', 'error'); return false; };
-        }
-      } else {
-        // Akun terdaftar → tampilkan status langganan + login PIN
-        const plan = data.plan || 'free';
-        const active = plan !== 'free' && (!data.plan_expires_at || new Date(data.plan_expires_at).getTime() >= Date.now());
-        const card = document.getElementById('accountStatusCard');
-        if (active) {
-          card.className = 'bg-emerald-50 border border-emerald-200 rounded-2xl p-3.5 text-xs space-y-1.5';
-          card.innerHTML = `
-            <p class="font-extrabold text-emerald-800">✅ Akun Terdaftar — Langganan Aktif</p>
-            <p class="text-emerald-700">Paket ${PLAN_LABELS[plan] || plan}${data.plan_expires_at ? ' s/d ' + formatDate(data.plan_expires_at) : ''}</p>
-            <p class="text-slate-500">Masukkan PIN Anda untuk masuk ke dashboard.</p>`;
-        } else {
-          card.className = 'bg-amber-50 border border-amber-200 rounded-2xl p-3.5 text-xs space-y-1.5';
-          card.innerHTML = `
-            <p class="font-extrabold text-amber-800">⏳ Akun Terdaftar — Belum Berlangganan</p>
-            <p class="text-amber-700">Semua akses dashboard dikunci sampai langganan aktif.</p>
-            ${BOT_WA ? '<a href="https://wa.me/' + BOT_WA + '?text=' + encodeURIComponent('langganan ' + phone) + '" target="_blank" class="block text-center bg-amber-600 hover:bg-amber-700 text-white font-bold py-2 rounded-lg">Aktifkan Langganan via WA →</a>' : ''}
-            <p class="text-slate-500">Atau tetap masuk dengan PIN — Anda akan diarahkan ke halaman harga.</p>`;
-        }
-        document.getElementById('phoneCheckSection').classList.add('hidden');
-        document.getElementById('pinLoginSection').classList.remove('hidden');
-      }
+      const s = await fetchStatusApi({ phone });
+      if (!s || !s.ok) { showToast((s && s.error) ? s.error : 'Gagal cek status. Coba lagi.', 'error'); return; }
+      if (s.status === 'aktif_ada_pin') showPinLogin(s);
+      else if (s.status === 'aktif_belum_pin') showPinSetup(s);
+      else if (s.status === 'belum_aktif') { showNotRegistered(); startStatusPolling('aktif_belum_pin', showPinSetup); }
+      else showToast('Status tidak dikenal: ' + (s.status || '-'), 'error');
     } finally {
       btn.disabled = false; btn.textContent = 'Cek Status';
     }
   }
 
+  function showNotRegistered() {
+    hideAuthSections();
+    const a = document.getElementById('activateWaLl');
+    if (BOT_WA) {
+      a.href = 'https://wa.me/' + BOT_WA + '?text=' + encodeURIComponent('daftar ' + checkedPhone);
+      a.onclick = null;
+    } else {
+      a.href = '#';
+      a.onclick = () => { showToast('Nomor bot WA belum dikonfigurasi (isi BOT_WA di index.html).', 'error'); return false; };
+    }
+    document.getElementById('notFoundSection').classList.remove('hidden');
+  }
+
+  function showPinSetup() {
+    hideAuthSections();
+    document.getElementById('pinSetupInfo').innerHTML = '✅ Akun aktif — tinggal buat PIN kamu.<br><span class="text-slate-500">PIN 4 digit untuk login dashboard.</span>';
+    document.getElementById('pinNew').value = '';
+    document.getElementById('pinNew2').value = '';
+    document.getElementById('pinSetupError').classList.add('hidden');
+    document.getElementById('pinSetupSection').classList.remove('hidden');
+    document.getElementById('pinNew').focus();
+  }
+
+  function showPinLogin(s) {
+    hideAuthSections();
+    const card = document.getElementById('accountStatusCard');
+    const plan = s.plan || 'free';
+    const active = plan !== 'free' && (!s.plan_expires_at || new Date(s.plan_expires_at).getTime() >= Date.now());
+    if (active) {
+      card.className = 'bg-emerald-50 border border-emerald-200 rounded-2xl p-3.5 text-xs space-y-1.5';
+      card.innerHTML = '<p class="font-extrabold text-emerald-800">✅ Langganan Aktif: Paket ' + (PLAN_LABELS[plan] || plan) + (s.plan_expires_at ? ' s/d ' + formatDate(s.plan_expires_at) : '') + '</p><p class="text-slate-500">Masukkan PIN untuk masuk dashboard.</p>';
+    } else {
+      card.className = 'bg-amber-50 border border-amber-200 rounded-2xl p-3.5 text-xs space-y-1.5';
+      card.innerHTML = '<p class="font-extrabold text-amber-800">⏳ Belum ada langganan aktif</p><p class="text-amber-700">Akses dashboard dikunci sampai langganan aktif. Tetap bisa login — Anda akan diarahkan ke halaman harga.</p>';
+    }
+    document.getElementById('pinInput').value = '';
+    document.getElementById('loginError').classList.add('hidden');
+    document.getElementById('pinLoginSection').classList.remove('hidden');
+    document.getElementById('pinInput').focus();
+  }
+
+  function showLupaPin() {
+    hideAuthSections();
+    const a = document.getElementById('lupaPinWaLl');
+    if (BOT_WA) {
+      a.href = 'https://wa.me/' + BOT_WA + '?text=' + encodeURIComponent('daftar ' + checkedPhone);
+      a.onclick = null;
+    } else {
+      a.href = '#';
+      a.onclick = () => { showToast('Nomor bot WA belum dikonfigurasi (isi BOT_WA di index.html).', 'error'); return false; };
+    }
+    document.getElementById('lupaPinSection').classList.remove('hidden');
+    startStatusPolling('aktif_belum_pin', showPinSetup, 'lupaPollNote');
+  }
+
   function resetPhoneCheck() {
+    stopStatusPolling();
     checkedPhone = null;
-    document.getElementById('pinLoginSection').classList.add('hidden');
-    document.getElementById('notFoundSection').classList.add('hidden');
+    hideAuthSections();
     document.getElementById('phoneCheckSection').classList.remove('hidden');
     document.getElementById('loginError').classList.add('hidden');
     document.getElementById('pinInput').value = '';
+    document.getElementById('pinNew').value = '';
+    document.getElementById('pinNew2').value = '';
     const el = document.getElementById('checkPhone'); el.value = ''; el.focus();
+  }
+
+  async function saveNewPin() {
+    const pin = document.getElementById('pinNew').value.trim();
+    const pin2 = document.getElementById('pinNew2').value.trim();
+    const btn = document.getElementById('pinSaveBtn');
+    const errEl = document.getElementById('pinSetupError');
+    errEl.classList.add('hidden');
+    if (!/^\d{4}$/.test(pin)) { errEl.textContent = 'PIN harus 4 digit angka.'; errEl.classList.remove('hidden'); return; }
+    if (pin !== pin2) { errEl.textContent = 'PIN tidak sama. Ulangi lagi.'; errEl.classList.remove('hidden'); return; }
+    btn.disabled = true; btn.textContent = 'Menyimpan...';
+    try {
+      const s = await fetchStatusApi({ phone: checkedPhone, pin, op: 'set_pin' });
+      if (!s || !s.ok || !s.token_hash) { errEl.textContent = (s && s.error) ? s.error : 'Gagal menyimpan PIN. Coba lagi.'; errEl.classList.remove('hidden'); return; }
+      const { data, error } = await sb.auth.verifyOtp({ token_hash: s.token_hash, type: 'magiclink' });
+      if (error || !data.session) { errEl.textContent = 'Gagal membuat sesi. Coba lagi.'; errEl.classList.remove('hidden'); return; }
+      if (await onSignedIn(data.session)) {
+        stopStatusPolling();
+        showToast('PIN berhasil dibuat. Selamat datang!', 'success');
+        if (hasActiveSubscription()) showPage('dashboard-page');
+        else { showToast('Akun Anda belum berlangganan. Silakan pilih paket.', 'info'); showPage('pricing-page'); }
+      }
+    } catch (e) {
+      errEl.textContent = 'Tidak bisa terhubung ke server login.'; errEl.classList.remove('hidden');
+    } finally { btn.disabled = false; btn.textContent = 'Simpan PIN & Masuk'; }
   }
 
   async function doPinLogin() {
@@ -1745,14 +1884,12 @@
     const btn = document.getElementById('pinLoginBtn');
     document.getElementById('loginError').classList.add('hidden');
     if (!checkedPhone) { resetPhoneCheck(); return; }
-    if (!/^\d{6}$/.test(pin)) { showLoginError('PIN harus 6 digit angka.'); return; }
-    if (!N8N_LOGIN_URL) { showLoginError('Konfigurasi belum diisi: N8N_LOGIN_URL di index.html.'); return; }
+    if (!/^\d{4}$/.test(pin)) { showLoginError('PIN harus 4 digit angka.'); return; }
     btn.disabled = true;
     try {
-      const res = await fetch(N8N_LOGIN_URL, { method: 'POST', body: new URLSearchParams({ phone: checkedPhone, pin }) });
-      const out = await res.json().catch(() => ({}));
-      if (!res.ok || !out.token_hash) { showLoginError(out.error || 'PIN salah atau tidak berlaku.'); return; }
-      const { data, error } = await sb.auth.verifyOtp({ token_hash: out.token_hash, type: 'magiclink' });
+      const s = await fetchStatusApi({ phone: checkedPhone, pin, op: 'login' });
+      if (!s || !s.ok || !s.token_hash) { showLoginError((s && s.error) ? s.error : 'PIN salah atau tidak berlaku.'); return; }
+      const { data, error } = await sb.auth.verifyOtp({ token_hash: s.token_hash, type: 'magiclink' });
       if (error || !data.session) { showLoginError('Gagal membuat sesi. Coba lagi.'); return; }
       if (await onSignedIn(data.session)) {
         resetPhoneCheck();
@@ -1842,7 +1979,6 @@
       renderPricingState();
     }
   }
-  if (BOT_WA) { const a = document.getElementById('waLink'); a.href = 'https://wa.me/' + BOT_WA + '?text=masuk'; a.classList.remove('hidden'); }
   (async () => { const { data } = await sb.auth.getSession(); if (data.session) await onSignedIn(data.session); })();
 </script>
 </body>
