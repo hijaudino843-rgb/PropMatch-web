@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PropMatch AI - Asisten Agent Property Otomatis via WhatsApp</title>
+  <title>PropFit AI - Asisten Agent Property Otomatis via WhatsApp</title>
   
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -70,9 +70,9 @@
     <nav class="max-w-6xl mx-auto w-full px-6 py-5 flex items-center justify-between sticky top-0 bg-slate-50/80 backdrop-blur-md z-40 border-b border-slate-200/50">
       <div class="flex items-center gap-2 cursor-pointer" onclick="showPage('landing-page')">
         <div class="w-10 h-10 bg-indigo-600 rounded-2xl flex items-center justify-center text-white font-extrabold text-xl shadow-lg shadow-indigo-200">
-          PM
+          PF
         </div>
-        <span class="font-extrabold text-xl text-slate-900 tracking-tight">PropMatch <span class="text-indigo-600">AI</span></span>
+        <span class="font-extrabold text-xl text-slate-900 tracking-tight">PropFit <span class="text-indigo-600">AI</span></span>
       </div>
       
       <div class="hidden md:flex items-center gap-8 text-sm font-semibold text-slate-600">
@@ -102,7 +102,7 @@
     <main class="max-w-6xl mx-auto px-6 py-10 lg:py-16 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
       
       <!-- Text Hero -->
-      <div class="lg:col-span-7 space-y-6 text-center lg:text-left" data-aos="fade-right">
+      <div class="lg:col-span-12 max-w-3xl mx-auto space-y-6 text-center" data-aos="fade-up">
         <span class="inline-flex items-center gap-2 bg-indigo-50 text-indigo-700 text-xs font-extrabold px-4 py-2 rounded-full border border-indigo-100 shadow-sm">
           ⚡ Smart Property Assistant for Multi-Agent
         </span>
@@ -111,11 +111,11 @@
           Kelola listing & <span class="text-indigo-600 underline decoration-wavy decoration-indigo-300">matching leads buyer</span> cukup via Chat WA.
         </h1>
         
-        <p class="text-slate-600 text-base sm:text-lg max-w-xl mx-auto lg:mx-0">
+        <p class="text-slate-600 text-base sm:text-lg max-w-xl mx-auto">
           Agent cukup kirim detail listingan owner atau request buyer ke WhatsApp Bot. AI kami otomatis mengisolasi database per agen & menghitung persentase kecocokan property secara instan.
         </p>
 
-        <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2">
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">
           <button onclick="enterDemoMode()" class="w-full sm:w-auto bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold text-base px-8 py-4 rounded-2xl shadow-xl shadow-indigo-200 transition-all hover:-translate-y-1">
             Buka Dashboard Demo 🚀
           </button>
@@ -124,7 +124,7 @@
           </button>
         </div>
 
-        <div class="pt-6 grid grid-cols-3 gap-4 border-t border-slate-200/60 max-w-md mx-auto lg:mx-0 text-center lg:text-left">
+        <div class="pt-6 grid grid-cols-3 gap-4 border-t border-slate-200/60 max-w-md mx-auto text-center">
           <div>
             <p class="text-2xl font-black text-slate-900">100% Auto</p>
             <p class="text-xs text-slate-500 font-medium">Auto-Matching AI</p>
@@ -140,56 +140,44 @@
         </div>
       </div>
 
-      <!-- Simulator WhatsApp Chat Mockup -->
-      <div id="simulasi" class="lg:col-span-5 flex flex-col items-center" data-aos="fade-left">
-        <div class="w-full max-w-[350px] bg-slate-900 p-4 rounded-[42px] shadow-2xl border-4 border-slate-800 relative float-animation">
-          <div class="w-28 h-4 bg-slate-800 rounded-full mx-auto mb-3"></div>
-          
-          <div class="bg-[#efeae2] h-[460px] rounded-[30px] overflow-hidden flex flex-col justify-between shadow-inner">
-            <div class="bg-[#075e54] text-white p-3.5 flex items-center gap-3">
-              <div class="w-8 h-8 bg-indigo-500 rounded-full flex items-center justify-center font-bold text-xs text-white">PM</div>
-              <div>
-                <p class="text-xs font-bold leading-tight">PropMatch Bot (Agent Assistant)</p>
-                <p class="text-[10px] text-emerald-200">Online • AI Bot active</p>
-              </div>
-            </div>
 
-            <div id="sim-chat-box" class="p-3 space-y-3 overflow-y-auto flex-1 text-xs">
-              <div class="bg-white p-2.5 rounded-xl shadow-sm max-w-[88%] chat-bubble border border-slate-100">
-                👋 Halo Agent! Saya <b>Bot PropMatch AI</b>.<br><br>
-                Klik salah satu <b>tombol di bawah</b> untuk mencoba simulasi interaksi dengan bot WhatsApp 👇
-              </div>
-            </div>
+    </main>
 
-            <div id="input-container" class="p-3 bg-slate-100 border-t border-slate-200 transition-all duration-300">
-              <p class="text-[10px] font-bold text-slate-500 mb-2 text-center">👇 Pilih contoh interaksi Bot WA:</p>
-              <div class="grid grid-cols-2 gap-1.5">
-                <button onclick="runSimChatPreset('listing')" class="bg-indigo-50 border border-indigo-200 text-indigo-700 text-[10px] font-bold py-2.5 px-2 rounded-xl hover:bg-indigo-100 transition">
-                  🏠 Tambah Listing Baru
-                </button>
-                <button onclick="runSimChatPreset('lead')" class="bg-emerald-50 border border-emerald-200 text-emerald-700 text-[10px] font-bold py-2.5 px-2 rounded-xl hover:bg-emerald-100 transition">
-                  🔎 Request Buyer Lead
-                </button>
-                <button onclick="runSimChatPreset('ruko')" class="bg-amber-50 border border-amber-200 text-amber-700 text-[10px] font-bold py-2.5 px-2 rounded-xl hover:bg-amber-100 transition">
-                  🏪 Listing Ruko
-                </button>
-                <button onclick="runSimChatPreset('status')" class="bg-slate-50 border border-slate-200 text-slate-600 text-[10px] font-bold py-2.5 px-2 rounded-xl hover:bg-slate-100 transition">
-                  📋 Menu / Bantuan Bot
-                </button>
+    <!-- TES BOT WA: klik contoh, balasan seperti bot asli -->
+    <section id="simulasi" class="bg-gradient-to-b from-indigo-50/60 to-white py-16 border-t border-slate-200/60">
+      <div class="max-w-6xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+        <div class="lg:col-span-7 space-y-5">
+          <span class="inline-block bg-indigo-100 text-indigo-700 text-xs font-extrabold px-4 py-2 rounded-full">Coba sekarang, tanpa daftar</span>
+          <h2 class="text-3xl sm:text-4xl font-black text-slate-900 leading-tight">Rasain gimana rasanya chat sama PropFit</h2>
+          <p class="text-slate-600 text-base max-w-xl">Pencet salah satu contoh di bawah. PropFit bakal bales persis kayak di WhatsApp beneran. 👇</p>
+          <div id="simCards" class="space-y-3 max-w-xl"></div>
+        </div>
+        <div class="lg:col-span-5 flex flex-col items-center">
+          <div class="w-full max-w-[350px] bg-slate-900 p-4 rounded-[42px] shadow-2xl border-4 border-slate-800 relative">
+            <div class="w-28 h-4 bg-slate-800 rounded-full mx-auto mb-3"></div>
+            <div class="bg-[#e5ddd5] h-[470px] rounded-[30px] overflow-hidden flex flex-col shadow-inner">
+              <div class="bg-[#075e54] text-white p-3.5 flex items-center gap-3 shrink-0">
+                <div class="w-9 h-9 bg-indigo-500 rounded-full flex items-center justify-center font-extrabold text-xs text-white">PF</div>
+                <div>
+                  <p class="text-sm font-bold leading-tight">PropFit</p>
+                  <p class="text-[10px] text-emerald-200">online</p>
+                </div>
+              </div>
+              <div id="sim-chat-box" class="p-3 space-y-2 overflow-y-auto flex-1 text-[13px] leading-snug"></div>
+              <div id="input-container" class="p-3 bg-slate-100 border-t border-slate-200 text-center text-[11px] font-bold text-slate-500 shrink-0 transition-all duration-300">
+                👉 Pencet salah satu contoh buat liat balasan PropFit
               </div>
             </div>
           </div>
         </div>
-        <p class="text-xs text-slate-400 mt-4 italic">*Klik tombol di atas untuk mensimulasikan bot WA</p>
       </div>
-
-    </main>
+    </section>
 
     <!-- KEUNGGULAN SECTION -->
     <section id="keunggulan" class="bg-white py-16 border-t border-slate-200/60">
       <div class="max-w-6xl mx-auto px-6">
         <div class="text-center max-w-2xl mx-auto mb-12" data-aos="fade-up">
-          <h2 class="text-3xl font-black text-slate-900">Mengapa Memilih PropMatch AI?</h2>
+          <h2 class="text-3xl font-black text-slate-900">Mengapa Memilih PropFit AI?</h2>
           <p class="text-slate-500 text-sm mt-2">Didesain khusus untuk efisiensi kerja agen properti modern.</p>
         </div>
 
@@ -219,7 +207,7 @@
     <section id="fitur" class="py-16 bg-slate-50 border-t border-slate-200/60">
       <div class="max-w-6xl mx-auto px-6">
         <div class="text-center max-w-2xl mx-auto mb-12" data-aos="fade-up">
-          <h2 class="text-3xl font-black text-slate-900">Fitur Utama PropMatch AI</h2>
+          <h2 class="text-3xl font-black text-slate-900">Fitur Utama PropFit AI</h2>
           <p class="text-slate-500 text-sm mt-2">Segala kebutuhan rekap data & penutupan transaksi dalam satu ekosistem.</p>
         </div>
 
@@ -286,7 +274,7 @@
       <div class="max-w-4xl mx-auto px-6">
         <div class="text-center mb-12" data-aos="fade-up">
           <h2 class="text-3xl font-black text-slate-900">Pertanyaan Sering Diajukan (FAQ)</h2>
-          <p class="text-slate-500 text-sm mt-2">Penjelasan seputar fungsionalitas dan keamanan PropMatch AI.</p>
+          <p class="text-slate-500 text-sm mt-2">Penjelasan seputar fungsionalitas dan keamanan PropFit AI.</p>
         </div>
 
         <div class="space-y-4" data-aos="fade-up">
@@ -310,7 +298,7 @@
 
     <!-- Footer -->
     <footer class="bg-slate-900 text-slate-400 py-8 text-center text-xs">
-      <p>© 2026 PropMatch AI - Property Assistant & Smart Dashboard Engine.</p>
+      <p>© 2026 PropFit AI - Property Assistant & Smart Dashboard Engine.</p>
     </footer>
 
   </div>
@@ -324,7 +312,7 @@
       </button>
 
       <div class="w-16 h-16 bg-indigo-600 rounded-2xl flex items-center justify-center mx-auto mb-4 text-white font-black text-2xl shadow-lg shadow-indigo-200">
-        PM
+        PF
       </div>
 
       <h1 class="text-2xl font-bold text-slate-900 mb-1">Cek Status Akun & Login PIN</h1>
@@ -403,8 +391,8 @@
     <header class="bg-slate-900 text-white border-b border-slate-800 sticky top-0 z-40">
       <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
         <div class="flex items-center gap-2 cursor-pointer" onclick="showPage('landing-page')">
-          <div class="w-9 h-9 bg-indigo-600 rounded-xl flex items-center justify-center text-white font-extrabold text-lg">PM</div>
-          <span class="font-extrabold text-lg text-slate-100">PropMatch <span class="text-indigo-400">AI</span></span>
+          <div class="w-9 h-9 bg-indigo-600 rounded-xl flex items-center justify-center text-white font-extrabold text-lg">PF</div>
+          <span class="font-extrabold text-lg text-slate-100">PropFit <span class="text-indigo-400">AI</span></span>
         </div>
         <div class="flex items-center gap-3">
           <button id="pricingLogoutBtn" onclick="doLogout()" class="hidden text-xs font-bold text-slate-400 hover:text-rose-400 transition">Keluar</button>
@@ -418,88 +406,22 @@
       <div class="text-center max-w-2xl mx-auto mb-8">
         <span class="inline-flex items-center gap-2 bg-indigo-50 text-indigo-700 text-xs font-extrabold px-4 py-2 rounded-full border border-indigo-100">💎 LANGGANAN PREMIUM</span>
         <h1 class="text-3xl sm:text-4xl font-black text-slate-900 mt-4">Pilih Paket Langganan Anda</h1>
-        <p class="text-slate-500 text-sm mt-2">Dashboard Agent hanya bisa diakses dengan langganan aktif. Tanpa langganan, Anda tetap bebas melihat <b>Dashboard Demo</b> berisi data contoh.</p>
+        <p class="text-slate-500 text-sm mt-2">Pilih durasi, makin lama makin hemat. Semua paket berisi fitur yang sama — hanya beda kapasitas listing &amp; leads.</p>
       </div>
 
       <!-- Kartu Status Langganan (diisi oleh JS) -->
       <div id="subscriptionStatusCard" class="hidden max-w-2xl mx-auto mb-8"></div>
 
-      <!-- Toggle Bulanan / Tahunan -->
-      <div class="flex items-center justify-center gap-3 mb-10">
-        <span id="billingMonthlyLabel" class="text-xs font-bold text-indigo-600">Bulanan</span>
-        <button onclick="toggleBilling()" class="relative w-14 h-7 bg-indigo-600 rounded-full shadow-inner transition-colors">
-          <span id="billingKnob" class="absolute top-1 left-1 w-5 h-5 bg-white rounded-full shadow transition-transform duration-200"></span>
-        </button>
-        <span id="billingYearlyLabel" class="text-xs font-bold text-slate-400">
-          Tahunan
-          <span class="ml-1 px-1.5 py-0.5 bg-emerald-100 text-emerald-700 rounded-full text-[10px] font-extrabold">Hemat 20%</span>
-        </span>
-      </div>
+      <!-- Switcher Durasi -->
+      <div id="durationTabs" class="flex flex-wrap items-center justify-center gap-2 mb-10" role="tablist"></div>
 
-      <!-- Kartu Paket -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch max-w-5xl mx-auto">
+      <!-- Kartu Paket (dirender JS dari objek PLANS) -->
+      <div id="planGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 items-stretch max-w-6xl mx-auto"></div>
 
-        <!-- Paket Starter (Gratis) -->
-        <div class="bg-white rounded-3xl border border-slate-200 p-6 flex flex-col">
-          <p class="text-xs font-extrabold text-slate-400 uppercase tracking-wider">Starter</p>
-          <div class="mt-3 flex items-end gap-1">
-            <span class="price-amount text-4xl font-black text-slate-900" data-monthly="Rp 0" data-yearly="Rp 0">Rp 0</span>
-            <span class="price-period text-xs text-slate-400 font-semibold mb-1.5">/bulan</span>
-          </div>
-          <p class="text-xs text-slate-500 mt-2">Cocok untuk mencoba sistem sebelum berlangganan.</p>
-          <ul class="mt-5 space-y-2.5 text-xs text-slate-600 flex-1">
-            <li class="flex gap-2"><span class="text-emerald-500">✔</span> Akses Dashboard Demo (data contoh)</li>
-            <li class="flex gap-2"><span class="text-emerald-500">✔</span> Simulator chat WhatsApp Bot</li>
-            <li class="flex gap-2"><span class="text-emerald-500">✔</span> Halaman Landing, Fitur & FAQ</li>
-            <li class="flex gap-2 text-slate-400"><span>✖</span> Dashboard data asli milik Anda</li>
-            <li class="flex gap-2 text-slate-400"><span>✖</span> Smart Matching Engine AI</li>
-          </ul>
-          <button onclick="enterDemoMode()" class="mt-6 w-full border-2 border-indigo-200 hover:border-indigo-400 text-indigo-600 font-bold text-xs py-3 rounded-xl transition">
-            Coba Dashboard Demo
-          </button>
-        </div>
-
-        <!-- Paket Pro Agent (Populer) -->
-        <div class="relative bg-slate-900 text-white rounded-3xl p-6 pt-8 flex flex-col shadow-2xl ring-4 ring-indigo-500/30 md:scale-[1.03]">
-          <span class="absolute -top-3 left-1/2 -translate-x-1/2 bg-amber-400 text-slate-900 text-[10px] font-extrabold px-3 py-1 rounded-full shadow">⭐ PALING POPULER</span>
-          <p class="text-xs font-extrabold text-indigo-300 uppercase tracking-wider">Pro Agent</p>
-          <div class="mt-3 flex items-end gap-1">
-            <span class="price-amount text-4xl font-black text-white" data-monthly="Rp 99.000" data-yearly="Rp 950.000">Rp 99.000</span>
-            <span class="price-period text-xs text-slate-400 font-semibold mb-1.5">/bulan</span>
-          </div>
-          <p class="text-xs text-slate-400 mt-2">Untuk agen properti yang serius meningkatkan closing.</p>
-          <ul class="mt-5 space-y-2.5 text-xs text-slate-300 flex-1">
-            <li class="flex gap-2"><span class="text-emerald-400">✔</span> Semua fitur Starter</li>
-            <li class="flex gap-2"><span class="text-emerald-400">✔</span> Dashboard pribadi (Uniq ID WA)</li>
-            <li class="flex gap-2"><span class="text-emerald-400">✔</span> Listing & Leads <b>unlimited</b></li>
-            <li class="flex gap-2"><span class="text-emerald-400">✔</span> Smart Matching Engine AI</li>
-            <li class="flex gap-2"><span class="text-emerald-400">✔</span> 1-Click Broadcast WA ke Buyer</li>
-            <li class="flex gap-2"><span class="text-emerald-400">✔</span> Realtime sync n8n & Supabase</li>
-          </ul>
-          <button onclick="subscribePlan('pro')" class="mt-6 w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs py-3 rounded-xl transition shadow-lg shadow-indigo-900/50">
-            Berlangganan Pro
-          </button>
-        </div>
-
-        <!-- Paket Enterprise -->
-        <div class="bg-white rounded-3xl border border-slate-200 p-6 flex flex-col">
-          <p class="text-xs font-extrabold text-slate-400 uppercase tracking-wider">Enterprise</p>
-          <div class="mt-3 flex items-end gap-1">
-            <span class="price-amount text-4xl font-black text-slate-900" data-monthly="Rp 249.000" data-yearly="Rp 2.390.000">Rp 249.000</span>
-            <span class="price-period text-xs text-slate-400 font-semibold mb-1.5">/bulan</span>
-          </div>
-          <p class="text-xs text-slate-500 mt-2">Untuk broker & tim properti dengan banyak agen.</p>
-          <ul class="mt-5 space-y-2.5 text-xs text-slate-600 flex-1">
-            <li class="flex gap-2"><span class="text-emerald-500">✔</span> Semua fitur Pro Agent</li>
-            <li class="flex gap-2"><span class="text-emerald-500">✔</span> Multi-agent tanpa batas</li>
-            <li class="flex gap-2"><span class="text-emerald-500">✔</span> Database terisolasi per agent</li>
-            <li class="flex gap-2"><span class="text-emerald-500">✔</span> Prioritas support via WhatsApp</li>
-            <li class="flex gap-2"><span class="text-emerald-500">✔</span> Integrasi kustom / API</li>
-          </ul>
-          <button onclick="subscribePlan('enterprise')" class="mt-6 w-full border-2 border-slate-300 hover:border-indigo-400 text-slate-700 font-bold text-xs py-3 rounded-xl transition">
-            Berlangganan Enterprise
-          </button>
-        </div>
+      <p class="text-center text-xs text-slate-500 mt-6">✨ Termasuk Akses AI Matching Engine, Bot WhatsApp, &amp; Realtime Sync.</p>
+      <p class="text-center text-xs text-slate-400 mt-2 max-w-xl mx-auto">Semua paket punya fitur yang sama — hanya beda kapasitas. Jika langganan berakhir, data Anda tetap tersimpan &amp; bisa dilihat. Jika kuota penuh, Anda tetap bisa masuk, hanya tidak bisa menambah data baru.</p>
+      <div class="text-center mt-5">
+        <button onclick="enterDemoMode()" class="text-xs font-bold text-indigo-600 hover:text-indigo-800 underline underline-offset-4">Coba Dashboard Demo (data contoh)</button>
       </div>
 
       <!-- CTA Login untuk pengunjung (tamu) -->
@@ -509,7 +431,7 @@
       </div>
 
       <p class="text-center text-xs text-slate-400 mt-10 max-w-xl mx-auto">
-        💡 Pembayaran dilakukan via <b>chat WhatsApp Bot</b> ke Admin. Setelah transfer selesai, klik tombol <b>"Cek Status Langganan"</b> di kartu status untuk langsung mengaktifkan akses dashboard Anda.
+        💡 Pembayaran lewat halaman aman <b>Mayar</b> (QRIS, Virtual Account, e-wallet). Setelah bayar, langganan aktif otomatis. Jika belum berubah, klik <b>"Cek Status"</b> di kartu status.
       </p>
     </main>
   </div>
@@ -523,9 +445,9 @@
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between h-16">
           <div class="flex items-center space-x-3 cursor-pointer" onclick="showPage('landing-page')">
-            <div class="p-2 bg-indigo-600 rounded-lg text-white font-extrabold text-sm">PM</div>
+            <div class="p-2 bg-indigo-600 rounded-lg text-white font-extrabold text-sm">PF</div>
             <div>
-              <h1 class="text-base font-bold leading-tight">PropMatch <span class="text-indigo-400">AI</span></h1>
+              <h1 class="text-base font-bold leading-tight">PropFit <span class="text-indigo-400">AI</span></h1>
               <p class="text-[10px] text-slate-400">Agent Dashboard & Smart Matcher</p>
             </div>
           </div>
@@ -561,8 +483,29 @@
       </div>
     </div>
 
+    <!-- Banner langganan berakhir (data tetap aman, hanya baca) -->
+    <div id="expiredBanner" class="hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
+      <div class="bg-rose-50 border border-rose-200 rounded-2xl p-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+        <div class="text-center sm:text-left">
+          <p class="text-sm font-extrabold text-rose-800">⌛ Langganan Anda berakhir</p>
+          <p class="text-xs text-rose-700">Semua data tetap tersimpan &amp; bisa dilihat. Perpanjang untuk menambah listing/lead baru.</p>
+        </div>
+        <button onclick="showPage('pricing-page')" class="bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs px-5 py-2.5 rounded-xl transition shrink-0">Perpanjang</button>
+      </div>
+    </div>
+
     <!-- Main Container Dashboard -->
     <main class="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+
+      <!-- Kuota paket -->
+      <section id="quotaBar" class="hidden bg-white border border-slate-200/80 rounded-2xl shadow-sm p-4 flex flex-col sm:flex-row sm:items-center gap-4">
+        <div class="shrink-0">
+          <p class="text-[10px] font-extrabold text-slate-400 uppercase tracking-wider">Kuota Paket</p>
+          <p id="quotaPlanLabel" class="text-xs font-extrabold text-slate-800 mt-0.5"></p>
+        </div>
+        <div id="quotaRows" class="grid grid-cols-1 sm:grid-cols-2 gap-4 flex-1"></div>
+        <button onclick="showPage('pricing-page')" class="text-xs font-bold text-indigo-600 hover:text-indigo-800 shrink-0">Upgrade / Perpanjang →</button>
+      </section>
 
       <!-- Metrics Cards -->
       <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -619,13 +562,13 @@
           <div class="flex flex-col gap-2 pt-2">
             <button onclick="focusSimulatorInput(); showPage('landing-page');" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs py-3 px-4 rounded-xl flex items-center justify-center gap-2 shadow-sm transition">
               <i data-lucide="message-circle" class="w-4 h-4"></i>
-              <span>Simulasi Input Chat WA Bot</span>
+              <span>Tes Chat Bot WA</span>
             </button>
-            <button onclick="openModal('addListingModal')" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs py-3 px-4 rounded-xl flex items-center justify-center gap-2 shadow-sm transition">
+            <button onclick="openAddListing()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs py-3 px-4 rounded-xl flex items-center justify-center gap-2 shadow-sm transition">
               <i data-lucide="plus" class="w-4 h-4"></i>
               <span>Input Manual Property Listing</span>
             </button>
-            <button onclick="openModal('addLeadModal')" class="bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs py-3 px-4 rounded-xl flex items-center justify-center gap-2 shadow-sm transition">
+            <button onclick="openAddLead()" class="bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs py-3 px-4 rounded-xl flex items-center justify-center gap-2 shadow-sm transition">
               <i data-lucide="user-plus" class="w-4 h-4"></i>
               <span>Input Manual Buyer Lead</span>
             </button>
@@ -706,7 +649,7 @@
             </div>
             <div class="flex items-center space-x-2">
               <input type="text" id="searchListingInput" oninput="renderListingsTable()" placeholder="Cari lokasi, judul, tipe..." class="bg-slate-50 border border-slate-300 text-xs rounded-xl px-3 py-2 w-48 sm:w-64 focus:outline-none focus:ring-1 focus:ring-indigo-500">
-              <button onclick="openModal('addListingModal')" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold px-3 py-2 rounded-xl transition flex items-center space-x-1">
+              <button onclick="openAddListing()" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold px-3 py-2 rounded-xl transition flex items-center space-x-1">
                 <i data-lucide="plus" class="w-4 h-4"></i>
                 <span>Tambah Listing</span>
               </button>
@@ -743,7 +686,7 @@
             </div>
             <div class="flex items-center space-x-2">
               <input type="text" id="searchLeadInput" oninput="renderLeadsTable()" placeholder="Cari nama buyer, lokasi..." class="bg-slate-50 border border-slate-300 text-xs rounded-xl px-3 py-2 w-48 sm:w-64 focus:outline-none focus:ring-1 focus:ring-indigo-500">
-              <button onclick="openModal('addLeadModal')" class="bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold px-3 py-2 rounded-xl transition flex items-center space-x-1">
+              <button onclick="openAddLead()" class="bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold px-3 py-2 rounded-xl transition flex items-center space-x-1">
                 <i data-lucide="plus" class="w-4 h-4"></i>
                 <span>Tambah Lead</span>
               </button>
@@ -901,7 +844,7 @@
   <!-- MENU PROFIL (muncul saat klik avatar) -->
   <div id="profileMenu" class="hidden fixed z-[60] w-64 bg-white rounded-2xl shadow-2xl border border-slate-200 p-4 space-y-3 text-left">
     <div class="flex items-start gap-3">
-      <div id="pmAvatar" class="w-10 h-10 shrink-0 bg-indigo-600 text-white rounded-full flex items-center justify-center font-extrabold text-sm">PM</div>
+      <div id="pmAvatar" class="w-10 h-10 shrink-0 bg-indigo-600 text-white rounded-full flex items-center justify-center font-extrabold text-sm">PF</div>
       <div class="min-w-0">
         <p class="text-[10px] font-extrabold text-emerald-600 uppercase tracking-wider">✓ Sudah Login</p>
         <p id="pmName" class="text-sm font-bold text-slate-800 leading-tight truncate">-</p>
@@ -1086,11 +1029,11 @@
     let dbLeads = [];
     let agentChart = null;
     let demoMode = false;                 // true = sedang melihat dashboard contoh (tanpa login)
-    let currentPlan = 'free';             // paket langganan dari tabel agents (free/pro/enterprise)
+    let currentPlan = 'free';             // paket langganan dari tabel agents (free/starter/pro/toppro/agency)
     let currentPlanExpiresAt = null;      // masa berlaku langganan (opsional)
     let profileAgent = { name: null, phone: null }; // profil utk avatar (teks DB dirender via textContent = aman XSS)
     const DEMO_AGENT_ID = "6281234567890"; // Uniq ID agent untuk data dummy demo
-    const PLAN_LABELS = { free: 'Starter', trial: 'Trial', pro: 'Pro Agent', enterprise: 'Enterprise' };
+    const PLAN_LABELS = { free: 'Belum berlangganan', trial: 'Trial', starter: 'Starter', pro: 'Pro Agent', toppro: 'Top Pro', agency: 'Agency', enterprise: 'Agency' };
 
     document.addEventListener("DOMContentLoaded", () => {
       lucide.createIcons();
@@ -1129,7 +1072,7 @@
       const { id, db_id, ...row } = obj;
       const { data, error } = await sb.from(table).insert(row).select().single();
       if (error) {
-        showToast("Gagal simpan ke Supabase: " + error.message, "error");
+        showToast(friendlyDbError(error.message) || ("Gagal menyimpan data: " + error.message), "error");
         const i = arr.indexOf(obj); if (i > -1) arr.splice(i, 1);
       } else {
         obj.db_id = data.id; obj.id = prefix + data.id;
@@ -1140,17 +1083,71 @@
     function saveLeads() {}
 
     // Page Router + Gate Akses (dashboard asli butuh login + langganan aktif)
+    function hasPlanHistory() { return !!currentPlan && currentPlan !== 'free'; } // pernah berlangganan (aktif/kedaluwarsa)
     function hasActiveSubscription() {
-      if (!currentPlan || currentPlan === 'free') return false;
+      if (!hasPlanHistory()) return false;
       if (currentPlanExpiresAt && new Date(currentPlanExpiresAt).getTime() < Date.now()) return false;
       return true;
+    }
+    // Batas kuota paket saat ini (null = unlimited)
+    function currentLimits() {
+      const k = canonPlan(currentPlan);
+      const d = dbPlans[currentPlan] || dbPlans[k];
+      if (d) return { listings: d.max_listings, leads: d.max_leads };
+      const p = PLANS[k];
+      return p ? { listings: p.listings, leads: p.leads } : { listings: 0, leads: 0 };
+    }
+    function quotaState(kind) { // kind: 'listings' | 'leads'
+      const limit = currentLimits()[kind];
+      const used = (kind === 'listings' ? dbListings : dbLeads).length;
+      return { used, limit, full: limit !== null && used >= limit };
+    }
+    function canAdd(kind) {
+      if (demoMode) return true;
+      const label = kind === 'listings' ? 'listing' : 'lead';
+      if (!hasActiveSubscription()) {
+        showToast('Langganan berakhir. Data tetap aman, tapi perpanjang dulu untuk menambah ' + label + ' baru.', 'error');
+        showPage('pricing-page'); return false;
+      }
+      const q = quotaState(kind);
+      if (q.full) {
+        showToast('Kuota ' + label + ' penuh (' + q.used + '/' + q.limit + '). Upgrade paket untuk menambah lagi.', 'error');
+        showPage('pricing-page'); return false;
+      }
+      return true;
+    }
+    function openAddListing() { if (canAdd('listings')) openModal('addListingModal'); }
+    function openAddLead() { if (canAdd('leads')) openModal('addLeadModal'); }
+    function friendlyDbError(msg) {
+      msg = String(msg || '');
+      let m;
+      if ((m = msg.match(/KUOTA_(LISTING|LEAD)_PENUH\|([^|]*)\|(\d+)/))) return 'Kuota ' + m[1].toLowerCase() + ' paket ' + m[2] + ' penuh (' + m[3] + '). Upgrade paket untuk menambah lagi.';
+      if (msg.includes('LANGGANAN_HABIS')) return 'Langganan berakhir. Data tetap aman, perpanjang untuk menambah data baru.';
+      if (msg.includes('BELUM_LANGGANAN')) return 'Belum ada langganan aktif.';
+      return null;
+    }
+    function renderQuota() {
+      const box = document.getElementById('quotaBar');
+      const exp = document.getElementById('expiredBanner');
+      if (!box) return;
+      if (demoMode || !currentSession) { box.classList.add('hidden'); exp.classList.add('hidden'); return; }
+      box.classList.remove('hidden');
+      exp.classList.toggle('hidden', hasActiveSubscription());
+      const row = (label, q) => {
+        const pct = q.limit === null ? 8 : Math.min(100, q.limit ? Math.round(q.used / q.limit * 100) : 100);
+        const color = q.full ? 'bg-rose-500' : pct >= 80 ? 'bg-amber-500' : 'bg-indigo-500';
+        return `<div><div class="flex justify-between text-[11px] font-bold text-slate-600"><span>${label}</span><span>${q.used} / ${q.limit === null ? '∞' : q.limit}${q.full ? ' • PENUH' : ''}</span></div>
+          <div class="h-1.5 bg-slate-100 rounded-full mt-1 overflow-hidden"><div class="${color} h-full rounded-full" style="width:${pct}%"></div></div></div>`;
+      };
+      document.getElementById('quotaPlanLabel').textContent = 'Paket ' + (PLAN_LABELS[currentPlan] || currentPlan) + (currentPlanExpiresAt ? ' • s/d ' + formatDate(currentPlanExpiresAt) : '');
+      document.getElementById('quotaRows').innerHTML = row('Listing', quotaState('listings')) + row('Leads', quotaState('leads'));
     }
 
     function showPage(pageId) {
       // Gate: dashboard asli butuh login + langganan. Mode demo bebas diakses tanpa verifikasi.
       if (pageId === 'dashboard-page' && !demoMode) {
         if (!currentSession) pageId = 'auth-page';
-        else if (!hasActiveSubscription()) pageId = 'pricing-page';
+        else if (!hasPlanHistory()) pageId = 'pricing-page';
       }
 
       ['landing-page', 'auth-page', 'pricing-page', 'dashboard-page'].forEach(id => {
@@ -1165,7 +1162,7 @@
     }
 
     function smartLogin() {
-      if (currentSession) showPage(hasActiveSubscription() ? 'dashboard-page' : 'pricing-page');
+      if (currentSession) showPage(hasPlanHistory() ? 'dashboard-page' : 'pricing-page');
       else showPage('auth-page');
     }
 
@@ -1234,9 +1231,9 @@
         planEl.textContent = '✅ Langganan aktif: ' + (PLAN_LABELS[plan] || plan) + expiry;
       } else {
         planEl.className = 'text-[11px] px-3 py-2 rounded-xl bg-amber-50 text-amber-700 font-semibold';
-        planEl.textContent = '⏳ Belum berlangganan';
+        planEl.textContent = hasPlanHistory() ? '⌛ Langganan berakhir (data tetap aman)' : '⏳ Belum berlangganan';
       }
-      document.getElementById('pmDashboardBtn').classList.toggle('hidden', !active);
+      document.getElementById('pmDashboardBtn').classList.toggle('hidden', !hasPlanHistory());
     }
 
     function renderProfile() {
@@ -1267,6 +1264,7 @@
 
 
     function refreshDashboardUI() {
+      renderQuota();
       updateMetrics();
       populateLeadSelectOptions();
       renderListingsTable();
@@ -1509,132 +1507,79 @@
       lucide.createIcons();
     }
 
-    // WA Chat Simulator Engine (opsi tombol pilihan, bukan free text)
-    const SIM_PRESETS = {
-      listing: {
-        msg: "Jual rumah Surabaya Barat, 3KT 2KM, harga 1.8M, LT 120, Owner Bpk Hendra 0812345678",
-        reply: "✅ <b>Listing Berhasil Disimpan!</b><br>AI mem-parsing detail listing & memasukkannya ke database Uniq ID Anda."
-      },
-      lead: {
-        msg: "Cari rumah Surabaya Barat budget 2M min 3KT, Buyer Dr. Aris 0877112233",
-        reply: "✅ <b>Buyer Lead Request Disimpan!</b><br>AI langsung menghitung kecocokan dengan listing yang tersedia."
-      },
-      ruko: {
-        msg: "Jual ruko strategis MERR Rungkut, harga 2.5M, LT 90, Owner Ibu Siska 081388776655",
-        reply: "✅ <b>Listing Ruko Disimpan!</b><br>Tipe terdeteksi otomatis: Ruko • Lokasi Surabaya Timur."
-      },
-      status: {
-        msg: "Menu bot WA",
-        reply: "📋 <b>Perintah Bot WhatsApp:</b><br>• <b>daftar</b> — aktivasi akun baru<br>• <b>masuk</b> — minta PIN login<br>• <b>langganan</b> — info paket & pembayaran<br>• <b>jual ...</b> — simpan listing baru<br>• <b>cari ...</b> — simpan request buyer"
-      }
-    };
+    // ===== TES BOT WA: klik contoh -> balasan sama persis dengan teks bot asli (tidak menyimpan apa pun) =====
+    const SIM_EXAMPLES = [
+      { icon: '🏠', msg: 'Jual rumah Surabaya Barat 3KT 2KM harga 1.8M LT 120 Owner Pak Hendra 0812345678',
+        reply: '✅ Listing Direkap!\nRumah Surabaya Barat sudah dimasukkan ke Dashboard\n\n🆔 ID: LST-24' },
+      { icon: '🔎', msg: 'Cari rumah Surabaya Barat budget 2M min 3KT Buyer Bu Aris 0877112233',
+        reply: '✅ Buyer Lead Request Disimpan!\nAI telah mencocokkan listing yang sesuai di Dashboard\n\n🆔 ID: LED-12' },
+      { icon: '🏪', msg: 'Jual ruko MERR Rungkut harga 2.5M',
+        reply: '✅ Listing Direkap!\nRuko MERR Rungkut sudah dimasukkan ke Dashboard\n\n💡 Belum ada: nomor kontak, jumlah KT/KM.\nLengkapi dengan mengirim ID di bawah + datanya, contoh: LED-12 3KT 2KM 0877112233\n\n🆔 ID: LST-25' },
+      { icon: '✏️', msg: 'LED-12 3KT 2KM 0877112233',
+        reply: '✅ Data diperbarui: KT, KM, kontak\n\n🆔 ID: LED-12' },
+      { icon: '🙋', msg: 'daftar',
+        reply: '✅ Akun kamu sudah AKTIF! 🎉\n\nLangkah berikutnya buat PIN di website:\n1. Buka https://propfit.my.id/\n2. Klik Masuk → Cek Status dengan nomor WA kamu (6281234567890)\n3. Buat PIN 4 digit → langsung masuk dashboard' },
+      { icon: '💬', msg: 'PropFit itu apa sih? Gimana cara kerjanya?',
+        reply: 'Halo! 👋 PropFit itu asisten WhatsApp buat agen properti. Kamu cukup chat ke aku: kirim listing ("Jual ...") atau request buyer ("Cari ..."), nanti aku simpan rapi, dan dashboard-nya otomatis ngitung skor kecocokan (matching %) antara listing dan buyer ✨' }
+    ];
+    let simBusy = false;
+    function simEsc(t) { return String(t).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
+    function simHtml(t) { return simEsc(t).replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank" rel="noopener" class="text-sky-600 underline">$1</a>'); }
+    function simTime() { const d = new Date(); return String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0'); }
+    function simBubble(text, who) {
+      const box = document.getElementById('sim-chat-box');
+      const b = document.createElement('div');
+      const me = who === 'user';
+      b.className = 'chat-bubble rounded-xl shadow-sm px-3 py-2 max-w-[88%] text-slate-800 ' + (me ? 'bg-[#d9fdd3] ml-auto' : 'bg-white');
+      b.style.whiteSpace = 'pre-wrap';
+      b.innerHTML = simHtml(text) + '<div class="text-[10px] text-slate-400 text-right mt-1" style="white-space:normal">' + simTime() + (me ? ' <span class="text-sky-500">✓✓</span>' : '') + '</div>';
+      box.appendChild(b);
+      box.scrollTop = box.scrollHeight;
+      return b;
+    }
+    function simTyping() {
+      const box = document.getElementById('sim-chat-box');
+      const t = document.createElement('div');
+      t.className = 'chat-bubble bg-white rounded-xl shadow-sm px-3 py-2 w-16 text-slate-400 font-bold tracking-widest';
+      t.textContent = '• • •';
+      box.appendChild(t);
+      box.scrollTop = box.scrollHeight;
+      return t;
+    }
+    function runSimExample(i) {
+      const ex = SIM_EXAMPLES[i];
+      if (!ex || simBusy) return;
+      simBusy = true;
+      document.getElementById('sim-chat-box').innerHTML = '';
+      simBubble(ex.msg, 'user');
+      setTimeout(() => {
+        const t = simTyping();
+        setTimeout(() => { t.remove(); simBubble(ex.reply, 'bot'); simBusy = false; }, 900);
+      }, 450);
+    }
+    function renderSimCards() {
+      const wrap = document.getElementById('simCards');
+      if (!wrap) return;
+      wrap.innerHTML = '';
+      SIM_EXAMPLES.forEach((ex, i) => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'w-full flex items-center justify-between gap-3 bg-white border border-slate-200 hover:border-indigo-300 hover:shadow-md rounded-2xl px-5 py-4 text-left transition';
+        btn.innerHTML = '<span class="text-sm font-bold text-slate-900">' + ex.icon + ' "' + simEsc(ex.msg) + '"</span><span class="text-indigo-500 text-lg shrink-0">→</span>';
+        btn.onclick = () => runSimExample(i);
+        wrap.appendChild(btn);
+      });
+    }
+    renderSimCards();
 
     function focusSimulatorInput() {
       const simSection = document.getElementById('simulasi');
       const containerEl = document.getElementById('input-container');
-
       simSection.scrollIntoView({ behavior: 'smooth' });
-
       setTimeout(() => {
         containerEl.classList.add('highlight-ring');
         setTimeout(() => containerEl.classList.remove('highlight-ring'), 3000);
       }, 500);
-    }
-
-    function pushSimBubble(html, who) {
-      const chatBox = document.getElementById('sim-chat-box');
-      const b = document.createElement('div');
-      b.className = who === 'user'
-        ? "bg-[#dcf8c6] p-2.5 rounded-xl shadow-sm max-w-[85%] ml-auto chat-bubble text-slate-800"
-        : "bg-white p-2.5 rounded-xl shadow-sm max-w-[88%] chat-bubble font-medium text-indigo-950 border border-slate-100";
-      b.innerHTML = html;
-      chatBox.appendChild(b);
-      chatBox.scrollTop = chatBox.scrollHeight;
-    }
-
-    function runSimChatPreset(key) {
-      const preset = SIM_PRESETS[key];
-      if (!preset) return;
-      if (key === 'status') {
-        pushSimBubble('<b>' + preset.msg + '</b>', 'user');
-        setTimeout(() => pushSimBubble(preset.reply, 'bot'), 700);
-        return;
-      }
-      runSimChat(preset.msg, preset.reply);
-    }
-
-    function runSimChat(val, customReply) {
-      const chatBox = document.getElementById('sim-chat-box');
-      const text = (val || '').trim();
-      if (!text) return;
-
-      const userBubble = document.createElement('div');
-      userBubble.className = "bg-[#dcf8c6] p-2.5 rounded-xl shadow-sm max-w-[85%] ml-auto chat-bubble text-slate-800";
-      userBubble.innerText = text;
-      chatBox.appendChild(userBubble);
-      chatBox.scrollTop = chatBox.scrollHeight;
-
-      setTimeout(() => {
-        const botBubble = document.createElement('div');
-        botBubble.className = "bg-white p-2.5 rounded-xl shadow-sm max-w-[88%] chat-bubble font-medium text-indigo-950 border border-slate-100";
-
-        // Pengunjung (belum login & bukan mode demo): hanya simulasi, tidak menyimpan apa pun
-        if (!currentSession && !demoMode) {
-          botBubble.innerHTML = '✅ <b>Simulasi Berhasil!</b><br>Ini hanya contoh — data tidak tersimpan karena Anda belum masuk. Buka <b>Dashboard Demo</b> untuk melihat contoh dashboard lengkap.';
-          chatBox.appendChild(botBubble);
-          chatBox.scrollTop = chatBox.scrollHeight;
-          return;
-        }
-
-        // AI NLP Parsing Simulation Logic
-        const lower = text.toLowerCase();
-        if (lower.includes("jual") || lower.includes("listing")) {
-          const newListing = {
-            id: `LST-${Math.floor(100 + Math.random() * 900)}`,
-            agent_id: currentAgentId,
-            title: text.length > 30 ? text.substring(0, 30) + "..." : text,
-            type: lower.includes("ruko") ? "Ruko" : (lower.includes("apartemen") ? "Apartemen" : "Rumah"),
-            location: lower.includes("timur") ? "Surabaya Timur" : "Surabaya Barat",
-            price: extractPriceFromString(text) || 1500000000,
-            bedrooms: 3,
-            bathrooms: 2,
-            land_size: 100,
-            owner_name: "Owner WA",
-            owner_phone: "6281299887766",
-            created_at: new Date().toISOString()
-          };
-          dbListings.unshift(newListing);
-          persistRow("listings", "LST-", dbListings, newListing);
-          botBubble.innerHTML = customReply || `✅ <b>Listing Berhasil Disimpan!</b><br>Tersimpan di Uniq ID Agent (${currentAgentId}) & terupdate ke Dashboard.`;
-        } else {
-          const newLead = {
-            id: `LED-${Math.floor(100 + Math.random() * 900)}`,
-            agent_id: currentAgentId,
-            customer_name: "Buyer WA Lead",
-            customer_phone: "6285566778899",
-            property_type: lower.includes("ruko") ? "Ruko" : (lower.includes("apartemen") ? "Apartemen" : "Rumah"),
-            target_location: lower.includes("timur") ? "Surabaya Timur" : "Surabaya Barat",
-            max_budget: extractPriceFromString(text) || 2000000000,
-            min_bedrooms: 3,
-            min_bathrooms: 2,
-            created_at: new Date().toISOString()
-          };
-          dbLeads.unshift(newLead);
-          persistRow("leads", "LED-", dbLeads, newLead);
-          botBubble.innerHTML = customReply || `✅ <b>Buyer Lead Request Disimpan!</b><br>AI telah mencocokkan listing yang sesuai di Dashboard.`;
-        }
-
-        chatBox.appendChild(botBubble);
-        chatBox.scrollTop = chatBox.scrollHeight;
-        refreshDashboardUI();
-      }, 700);
-    }
-
-    function extractPriceFromString(str) {
-      if (str.includes("1.8M") || str.includes("1.8m")) return 1800000000;
-      if (str.includes("2.5M") || str.includes("2.5m")) return 2500000000;
-      if (str.includes("2M") || str.includes("2m")) return 2000000000;
-      return 1500000000;
     }
 
     // Live Social Proof Generator
@@ -1666,6 +1611,7 @@
     // Manual Add Handlers
     function handleManualAddListing(e) {
       e.preventDefault();
+      if (!canAdd('listings')) { closeModal('addListingModal'); return; }
       const newListing = {
         id: `LST-${Math.floor(100 + Math.random() * 900)}`,
         agent_id: currentAgentId,
@@ -1690,6 +1636,7 @@
 
     function handleManualAddLead(e) {
       e.preventDefault();
+      if (!canAdd('leads')) { closeModal('addLeadModal'); return; }
       const newLead = {
         id: `LED-${Math.floor(100 + Math.random() * 900)}`,
         agent_id: currentAgentId,
@@ -1782,6 +1729,8 @@
   // ====== KONFIGURASI (isi sekali, lalu upload ke GitHub) ======
   const BOT_WA = "62881036435185";           // nomor WA bot
   const N8N_LOGIN_URL = "https://n8n-ddwxrglfauxz.eu1.sumopod.my.id/webhook/propmatch-login";    // URL webhook n8n
+  const N8N_CHECKOUT_URL = N8N_LOGIN_URL.replace(/propmatch-login$/, 'propfit-checkout');   // buat tagihan Mayar
+  const N8N_PAYSYNC_URL = N8N_LOGIN_URL.replace(/propmatch-login$/, 'propfit-pay-sync');    // cek pembayaran manual
   // =============================================================
 
   let liveChannel = null;
@@ -1806,6 +1755,7 @@
     currentAgentId = agent.phone;
     currentPlan = agent.plan || 'free';
     currentPlanExpiresAt = agent.plan_expires_at || null;
+    try { const { data: pl } = await sb.from('plans').select('code,max_listings,max_leads'); dbPlans = {}; (pl || []).forEach(r => { dbPlans[r.code] = r; }); } catch (e) {}
     demoMode = false;
     document.getElementById('demoBanner').classList.add('hidden');
     document.getElementById('logoutBtn').textContent = 'Keluar';
@@ -1981,7 +1931,7 @@
       if (await onSignedIn(data.session)) {
         stopStatusPolling();
         showToast('PIN berhasil dibuat. Selamat datang!', 'success');
-        if (hasActiveSubscription()) showPage('dashboard-page');
+        if (hasPlanHistory()) showPage('dashboard-page');
         else { showToast('Akun Anda belum berlangganan. Silakan pilih paket.', 'info'); showPage('pricing-page'); }
       }
     } catch (e) {
@@ -2004,7 +1954,7 @@
       if (await onSignedIn(data.session)) {
         resetPhoneCheck();
         showToast('Login berhasil', 'success');
-        if (hasActiveSubscription()) showPage('dashboard-page');
+        if (hasPlanHistory()) showPage('dashboard-page');
         else { showToast('Akun Anda belum berlangganan. Silakan pilih paket.', 'info'); showPage('pricing-page'); }
       }
     } catch (e) {
@@ -2012,29 +1962,83 @@
     } finally { btn.disabled = false; }
   }
   async function doLogout() {
-    stopRealtime(); await sb.auth.signOut();
+    stopRealtime(); stopPaymentWatch(); await sb.auth.signOut();
     currentSession = null; currentAgentId = null; dbListings = []; dbLeads = [];
-    currentPlan = 'free'; currentPlanExpiresAt = null;
+    currentPlan = 'free'; currentPlanExpiresAt = null; dbPlans = {};
     profileAgent = { name: null, phone: null };
     showPage('landing-page');
   }
 
   // ====== HALAMAN PRICING & CEK LANGGANAN ======
-  let billingMode = 'monthly';
-  function toggleBilling() {
-    billingMode = billingMode === 'monthly' ? 'yearly' : 'monthly';
+  // ====== DATA PAKET (harga = per bulan, rupiah) ======
+  const PLANS = {
+    starter: { name: 'STARTER',    listings: 10,   leads: 3,    price: { 1: 29000,  3: 24000,  6: 19000, 12: 14500 } },
+    pro:     { name: 'PRO AGENT',  listings: 50,   leads: 15,   price: { 1: 69000,  3: 55000,  6: 45000, 12: 34500 }, popular: true },
+    toppro:  { name: 'TOP PRO',    listings: 150,  leads: 50,   price: { 1: 129000, 3: 105000, 6: 89000, 12: 64500 } },
+    agency:  { name: 'AGENCY (TEAM)', listings: null, leads: null, price: { 1: 249000, 3: 199000, 6: 169000, 12: 124500 } }
+  };
+  const DURATIONS = [
+    { m: 1,  label: '1 Bulan',  badge: '' },
+    { m: 3,  label: '3 Bulan',  badge: 'HEMAT 18%' },
+    { m: 6,  label: '6 Bulan',  badge: 'HEMAT 35%' },
+    { m: 12, label: '12 Bulan', badge: 'PALING HEMAT 50%' }
+  ];
+  let selectedDuration = 12; // default tab: 12 Bulan
+  const rupiah = n => 'Rp ' + Math.round(n).toLocaleString('id-ID');
+  const canonPlan = p => (p === 'enterprise' ? 'agency' : p === 'trial' ? 'starter' : p);
+  let dbPlans = {}; // batas kuota dari tabel `plans` (sumber utama); fallback ke PLANS
+
+  function planPriceInfo(key, m) {
+    const per = PLANS[key].price[m];
+    return { per, total: per * m };
+  }
+  function setDuration(m) {
+    selectedDuration = m;
     renderPricingState();
   }
+  function renderDurationTabs() {
+    const box = document.getElementById('durationTabs');
+    if (!box) return;
+    box.innerHTML = DURATIONS.map(d => {
+      const on = d.m === selectedDuration;
+      return `<button type="button" role="tab" aria-selected="${on}" onclick="setDuration(${d.m})"
+        class="relative px-4 py-2.5 rounded-xl text-xs font-extrabold border transition ${on ? 'bg-indigo-600 border-indigo-600 text-white shadow-lg shadow-indigo-200' : 'bg-white border-slate-200 text-slate-600 hover:border-indigo-300'}">
+        ${d.label}${d.badge ? `<span class="ml-2 px-1.5 py-0.5 rounded-full text-[9px] font-extrabold ${on ? 'bg-amber-300 text-slate-900' : 'bg-emerald-100 text-emerald-700'}">${d.badge}</span>` : ''}
+      </button>`;
+    }).join('');
+  }
+  function renderPricingCards() {
+    const grid = document.getElementById('planGrid');
+    if (!grid) return;
+    const m = selectedDuration;
+    const cur = canonPlan(currentPlan);
+    grid.innerHTML = Object.keys(PLANS).map(key => {
+      const p = PLANS[key]; const { per, total } = planPriceInfo(key, m);
+      const dark = !!p.popular;
+      const mine = hasActiveSubscription() && cur === key;
+      const lim = v => v === null ? '<b>Unlimited</b>' : '<b>' + v.toLocaleString('id-ID') + '</b>';
+      const tick = dark ? 'text-emerald-400' : 'text-emerald-500';
+      return `<div class="relative rounded-3xl p-6 ${dark ? 'pt-8 bg-slate-900 text-white shadow-2xl ring-4 ring-indigo-500/30 lg:scale-[1.03]' : 'bg-white border border-slate-200'} flex flex-col" data-plan="${key}">
+        ${dark ? '<span class="absolute -top-3 left-1/2 -translate-x-1/2 bg-amber-400 text-slate-900 text-[10px] font-extrabold px-3 py-1 rounded-full shadow whitespace-nowrap">⭐ PALING POPULER</span>' : ''}
+        <p class="text-xs font-extrabold ${dark ? 'text-indigo-300' : 'text-slate-400'} uppercase tracking-wider">${p.name}${mine ? ' <span class="ml-1 bg-emerald-100 text-emerald-700 text-[9px] font-extrabold px-2 py-0.5 rounded-full normal-case tracking-normal align-middle">PAKET ANDA</span>' : ''}</p>
+        <div class="mt-3 flex items-end gap-1 whitespace-nowrap">
+          <span class="plan-per text-3xl xl:text-4xl font-black ${dark ? 'text-white' : 'text-slate-900'}">${rupiah(per)}</span>
+          <span class="text-xs ${dark ? 'text-slate-400' : 'text-slate-400'} font-semibold mb-1.5">/bln</span>
+        </div>
+        <p class="plan-total text-[11px] ${dark ? 'text-slate-400' : 'text-slate-500'} mt-1">Total bayar ${rupiah(total)} / ${m} bulan</p>
+        <ul class="mt-5 space-y-2.5 text-xs ${dark ? 'text-slate-300' : 'text-slate-600'} flex-1">
+          <li class="flex gap-2"><span class="${tick}">✔</span><span>${lim(p.listings)} Listing</span></li>
+          <li class="flex gap-2"><span class="${tick}">✔</span><span>${lim(p.leads)} Leads</span></li>
+          <li class="flex gap-2"><span class="${tick}">✔</span><span>Dashboard pribadi per nomor WA</span></li>
+          <li class="flex gap-2"><span class="${tick}">✔</span><span>AI Matching Engine &amp; Bot WhatsApp</span></li>
+        </ul>
+        <button type="button" onclick="subscribePlan('${key}', ${m})" class="mt-6 w-full ${dark ? 'bg-indigo-600 hover:bg-indigo-500 text-white shadow-lg shadow-indigo-900/50' : 'border-2 border-slate-300 hover:border-indigo-400 text-slate-700'} font-bold text-xs py-3 rounded-xl transition">${mine ? 'Perpanjang Paket' : 'Berlangganan'}</button>
+      </div>`;
+    }).join('');
+  }
   function renderPricingState() {
-    document.getElementById('billingKnob').classList.toggle('translate-x-7', billingMode === 'yearly');
-    const ml = document.getElementById('billingMonthlyLabel');
-    const yl = document.getElementById('billingYearlyLabel');
-    ml.classList.toggle('text-indigo-600', billingMode === 'monthly');
-    ml.classList.toggle('text-slate-400', billingMode !== 'monthly');
-    yl.classList.toggle('text-indigo-600', billingMode === 'yearly');
-    yl.classList.toggle('text-slate-400', billingMode !== 'yearly');
-    document.querySelectorAll('.price-amount').forEach(el => { el.textContent = el.dataset[billingMode]; });
-    document.querySelectorAll('.price-period').forEach(el => { el.textContent = billingMode === 'monthly' ? '/bulan' : '/tahun'; });
+    renderDurationTabs();
+    renderPricingCards();
     renderSubscriptionStatus();
   }
   function renderSubscriptionStatus() {
@@ -2047,36 +2051,104 @@
     }
     loginCta.classList.add('hidden');
     statusCard.classList.remove('hidden');
+    const label = PLAN_LABELS[currentPlan] || currentPlan;
+    const expiry = currentPlanExpiresAt ? ' s/d ' + formatDate(currentPlanExpiresAt) : '';
     if (hasActiveSubscription()) {
-      const expiry = currentPlanExpiresAt ? ' s/d ' + formatDate(currentPlanExpiresAt) : '';
       statusCard.innerHTML = `
         <div class="bg-emerald-50 border border-emerald-200 rounded-2xl p-5 flex flex-col sm:flex-row items-center justify-between gap-3">
           <div class="text-center sm:text-left">
-            <p class="text-sm font-extrabold text-emerald-800">✅ Langganan Aktif: Paket ${PLAN_LABELS[currentPlan] || currentPlan}${expiry}</p>
-            <p class="text-xs text-emerald-700 mt-0.5">Dashboard pribadi Anda sudah bisa diakses.</p>
+            <p class="text-sm font-extrabold text-emerald-800">✅ Langganan Aktif: Paket ${label}${expiry}</p>
+            <p class="text-xs text-emerald-700 mt-0.5">Mau perpanjang atau upgrade? Pilih paket di bawah.</p>
           </div>
           <button onclick="showPage('dashboard-page')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs px-5 py-3 rounded-xl transition shrink-0">Buka Dashboard →</button>
+        </div>`;
+    } else if (hasPlanHistory()) {
+      statusCard.innerHTML = `
+        <div class="bg-rose-50 border border-rose-200 rounded-2xl p-5 flex flex-col sm:flex-row items-center justify-between gap-3">
+          <div class="text-center sm:text-left">
+            <p class="text-sm font-extrabold text-rose-800">⌛ Langganan ${label} berakhir${expiry}</p>
+            <p class="text-xs text-rose-700 mt-0.5">Data Anda tetap tersimpan &amp; bisa dilihat. Perpanjang untuk bisa menambah data lagi.</p>
+          </div>
+          <div class="flex gap-2 shrink-0">
+            <button onclick="checkSubscriptionStatus()" class="bg-white border border-rose-300 text-rose-700 font-bold text-xs px-4 py-3 rounded-xl transition">Cek Status</button>
+            <button onclick="showPage('dashboard-page')" class="bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs px-4 py-3 rounded-xl transition">Lihat Data →</button>
+          </div>
         </div>`;
     } else {
       statusCard.innerHTML = `
         <div class="bg-amber-50 border border-amber-200 rounded-2xl p-5 flex flex-col sm:flex-row items-center justify-between gap-3">
           <div class="text-center sm:text-left">
             <p class="text-sm font-extrabold text-amber-800">⏳ Belum ada langganan aktif</p>
-            <p class="text-xs text-amber-700 mt-0.5">Pilih paket di bawah, lalu konfirmasi pembayaran via chat WhatsApp Bot.</p>
+            <p class="text-xs text-amber-700 mt-0.5">Pilih paket di bawah lalu bayar lewat QRIS / Virtual Account / e-wallet — aktif otomatis.</p>
           </div>
           <button onclick="checkSubscriptionStatus()" class="bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs px-5 py-3 rounded-xl transition shrink-0">Cek Status Langganan</button>
         </div>`;
     }
   }
-  function subscribePlan(planKey) {
-    if (!currentSession) { showToast('Silakan login / buat akun dulu.', 'info'); showPage('auth-page'); return; }
-    if (!BOT_WA) { showToast('Nomor bot WA belum dikonfigurasi (isi BOT_WA di index.html).', 'error'); return; }
-    const msg = 'Halo Admin, saya (' + (currentAgentId || '-') + ') ingin berlangganan paket ' + (PLAN_LABELS[planKey] || planKey) + '. Mohon info pembayarannya.';
+  let payBusy = false, payTimer = null, payTries = 0, payBase = '';
+  const planSig = () => (currentPlan || '') + '|' + (currentPlanExpiresAt || '');
+  function waFallback(p, m, per, total) {
+    const msg = 'Halo Admin, saya (' + (currentAgentId || '-') + ') ingin berlangganan paket ' + p.name + ' ' + m + ' bulan (' + rupiah(per) + '/bln, total ' + rupiah(total) + '). Mohon info pembayarannya.';
     window.open('https://wa.me/' + BOT_WA + '?text=' + encodeURIComponent(msg), '_blank');
-    showToast('Chat pembayaran dibuka di WhatsApp. Setelah transfer, klik "Cek Status Langganan".', 'info');
+  }
+  async function subscribePlan(tier, duration) {
+    tier = canonPlan(tier);
+    const p = PLANS[tier];
+    if (!p) { showToast('Paket tidak dikenal.', 'error'); return; }
+    const m = DURATIONS.some(d => d.m === Number(duration)) ? Number(duration) : selectedDuration;
+    if (!currentSession) { showToast('Silakan login / buat akun dulu.', 'info'); showPage('auth-page'); return; }
+    if (payBusy) return;
+    const { per, total } = planPriceInfo(tier, m);
+    payBusy = true;
+    showToast('Menyiapkan pembayaran ' + p.name + ' ' + m + ' bulan (' + rupiah(total) + ')...', 'info');
+    const win = window.open('', '_blank'); // dibuka dulu agar tidak diblokir popup-blocker
+    try {
+      const res = await fetch(N8N_CHECKOUT_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ phone: currentAgentId, plan: tier, months: m }) });
+      const j = await res.json().catch(() => ({}));
+      if (!res.ok || !j.ok || !j.link) throw new Error(j.error || 'Gagal membuat tagihan');
+      if (win) win.location.href = j.link; else window.location.href = j.link;
+      showToast('Halaman pembayaran dibuka. Setelah bayar, langganan aktif otomatis.', 'success');
+      startPaymentWatch();
+    } catch (e) {
+      if (win) win.close();
+      showToast('Pembayaran otomatis belum bisa dibuka (' + (e.message || 'error') + '). Hubungi admin via WhatsApp.', 'error');
+      if (BOT_WA) waFallback(p, m, per, total);
+    } finally { payBusy = false; }
+  }
+  // Setelah user ke halaman bayar: cek berkala sampai langganan aktif (maks ±10 menit)
+  function startPaymentWatch() {
+    stopPaymentWatch();
+    payBase = planSig(); payTries = 0;
+    payTimer = setInterval(async () => {
+      if (++payTries > 100 || !currentSession) { stopPaymentWatch(); return; }
+      const changed = await refreshPlanFromDb(payTries % 3 === 0); // tiap ±15 dtk minta n8n verifikasi ke Mayar (jaga-jaga webhook terlewat)
+      if (changed && hasActiveSubscription()) {
+        stopPaymentWatch();
+        showToast('Pembayaran diterima! Langganan aktif 🎉', 'success');
+        renderProfile(); renderPricingState();
+        if (document.getElementById('pricing-page').classList.contains('hidden') === false) showPage('dashboard-page');
+      }
+    }, 5000);
+  }
+  function stopPaymentWatch() { if (payTimer) { clearInterval(payTimer); payTimer = null; } }
+  document.addEventListener('visibilitychange', () => { if (!document.hidden && payTimer) refreshPlanFromDb(true); });
+  async function syncPayments() {
+    if (!currentAgentId || demoMode) return;
+    try { await fetch(N8N_PAYSYNC_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ phone: currentAgentId }) }); } catch (e) {}
+  }
+  // Baca ulang paket dari DB; true jika berubah dari saat pembayaran dimulai
+  async function refreshPlanFromDb(alsoSync) {
+    if (alsoSync) await syncPayments();
+    const { data: agent } = await sb.from('agents').select('plan,plan_expires_at').maybeSingle();
+    if (!agent) return false;
+    currentPlan = agent.plan || 'free';
+    currentPlanExpiresAt = agent.plan_expires_at || null;
+    return planSig() !== payBase;
   }
   async function checkSubscriptionStatus() {
     if (!currentSession) { showToast('Silakan login terlebih dahulu.', 'info'); showPage('auth-page'); return; }
+    await syncPayments(); // minta server memverifikasi pembayaran yang mungkin terlewat
+    await new Promise(r => setTimeout(r, 1500));
     const { data: agent, error } = await sb.from('agents').select('*').maybeSingle();
     if (error) { showToast('Gagal cek status: ' + error.message, 'error'); return; }
     if (!agent) { showToast('Akun belum terdaftar. Hubungi admin.', 'error'); return; }
@@ -2086,8 +2158,11 @@
     if (hasActiveSubscription()) {
       showToast('Langganan aktif! Membuka dashboard Anda...', 'success');
       showPage('dashboard-page');
+    } else if (hasPlanHistory()) {
+      showToast('Langganan Anda sudah berakhir. Silakan perpanjang.', 'info');
+      renderPricingState();
     } else {
-      showToast('Belum terdeteksi pembayaran. Silakan chat Admin via bot WA.', 'info');
+      showToast('Belum terdeteksi pembayaran. Jika sudah bayar, tunggu 1-2 menit lalu klik Cek Status lagi.', 'info');
       renderPricingState();
     }
   }
