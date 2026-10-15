@@ -2107,33 +2107,7 @@ function scoreMatch(lead, l) {
       renderPricingState();
     }
   }
-  // Kembali dari halaman pembayaran (redirect ?bayar=sukses): cek pembayaran lalu buka dashboard
-  async function handlePayReturn() {
-    if (!currentSession) { showPage('auth-page'); showToast('Masuk dulu untuk melihat status langganan Anda.', 'info'); return; }
-    showPage('pricing-page');
-    showToast('Memeriksa pembayaran Anda...', 'info');
-    for (let i = 0; i < 8; i++) {
-      await refreshPlanFromDb(true);
-      if (hasActiveSubscription()) {
-        showToast('Pembayaran diterima! Langganan aktif.', 'success');
-        renderProfile(); renderPricingState(); showPage('dashboard-page');
-        return;
-      }
-      await new Promise(r => setTimeout(r, 4000));
-    }
-    showToast('Pembayaran belum terkonfirmasi. Tunggu sebentar atau klik Cek Status Langganan.', 'info');
-    renderPricingState(); startPaymentWatch();
-  }
-  (async () => {
-    const { data } = await sb.auth.getSession();
-    if (data.session) await onSignedIn(data.session);
-    let back = null;
-    try { back = new URLSearchParams(location.search).get('bayar'); } catch (e) {}
-    if (back) {
-      try { history.replaceState(null, '', location.pathname); } catch (e) {}
-      await handlePayReturn();
-    }
-  })();
+  (async () => { const { data } = await sb.auth.getSession(); if (data.session) await onSignedIn(data.session); })();
 </script>
 </body>
 </html>
